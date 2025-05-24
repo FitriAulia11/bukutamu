@@ -115,7 +115,7 @@
 
         /* Footer styling */
         footer {
-            background-color: #0d6efd; /* bootstrap primary */
+            background-color:rgb(15, 69, 150); /* bootstrap primary */
             color: white;
             padding: 2rem 1rem;
             text-align: center;
@@ -143,7 +143,7 @@
     <div class="container d-flex align-items-center">
         <!-- Logo di sebelah kiri -->
         <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
-            <img src="{{ asset('img/logo.jpeg') }}" alt="Logo Wikrama" style="width: 40px; height: auto; margin-right: 10px;">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo Wikrama" style="width: 40px; height: auto; margin-right: 10px;">
             BukuTamu
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
@@ -172,6 +172,7 @@
 
 <!-- Spacer supaya konten di bawah tidak terlalu mepet -->
 <div class="content-spacer"></div>
+
 
 <!-- Footer -->
 <footer>
