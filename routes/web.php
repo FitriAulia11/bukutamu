@@ -36,6 +36,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         return 'Halaman Admin';
     });
 
+Route::get('/admin/form-tamu', [AdminController::class, 'formTamu'])->name('admin.form.tamu');
+Route::post('/admin/form-tamu', [AdminController::class, 'storeTamu'])->name('admin.form.tamu.store');
+
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
 
@@ -56,3 +59,4 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::post('/form/tamu/store', [UserController::class, 'store'])->name('form.tamu.store');
     Route::get('/form/tamu/{id}', [UserController::class, 'show'])->name('user.show');
 });
+

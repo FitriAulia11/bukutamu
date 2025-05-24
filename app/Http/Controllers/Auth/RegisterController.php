@@ -7,41 +7,31 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
     use RegistersUsers;
 
     /**
-     * Where to redirect users after registration.
+     * Tempat untuk mengarahkan pengguna setelah registrasi.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login'; // Setelah registrasi, redirect ke halaman login
 
     /**
-     * Create a new controller instance.
+     * Membuat instance controller baru.
      *
      * @return void
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest'); // Pastikan middleware guest digunakan
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Mendapatkan validator untuk permintaan registrasi yang masuk.
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -52,23 +42,40 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-             'role' => 'required|in:admin,user',    
+            'role' => ['required', 'in:user,admin'], // Validasi role
         ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Membuat instance pengguna baru setelah pendaftaran yang valid.
      *
      * @param  array  $data
      * @return \App\Models\User
      */
     protected function create(array $data)
     {
+        // Buat pengguna baru tanpa login otomatis
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => 'admin',
+            'role' => $data['role'],
         ]);
+    }
+
+    /**
+     * Override method registered untuk redirect ke login setelah registrasi.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function registered(Request $request, $user)
+    {
+        // Logout user setelah registrasi
+        $this->guard()->logout();
+
+        // Redirect ke halaman login dengan pesan sukses
+        return redirect('/login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 }
