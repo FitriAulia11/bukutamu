@@ -6,20 +6,20 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
-class RoleMiddleware
+
+class IsAdmin
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next, $role)
+     public function handle($request, Closure $next)
     {
-        if (!Auth::check() || Auth::user()->role !== $role) {
-            abort(403); // akses ditolak
+        if (Auth::check() && Auth::user()->role === 'admin') {
+            return $next($request);
         }
 
-        return $next($request);
+        return redirect('/'); // Atau redirect ke halaman lain jika bukan admin
     }
-
 }
