@@ -5,109 +5,198 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Selamat Datang</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net" />
-    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
-
-    <!-- Tailwind via CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        body {
-            font-family: 'Figtree', sans-serif;
-        }
-
-        .image-hover-container {
-            position: relative;
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
             width: 100%;
-            max-width: 600px;
-            height: 400px;
-            border-radius: 0.75rem; /* rounded-xl */
-            overflow: hidden;
-            cursor: pointer;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #111;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        .image-hover-container img {
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 20;
+            background: rgba(0, 123, 255, 0.85);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: background 0.3s ease;
+        }
+        .navbar-nav .nav-link {
+            color: #e0e0e0 !important;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #fff !important;
+            text-shadow: 0 0 5px rgba(255,255,255,0.7);
+        }
+
+        .image-slider-container {
+            position: relative;
+            width: 100vw;
+            height: 75vh;
+            overflow: hidden;
+            background: #000;
+            margin-top: 56px; /* height navbar */
+        }
+
+        .image-slider-container img {
             position: absolute;
             top: 0; left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 0.75rem;
-            transition: opacity 0.6s ease-in-out;
             opacity: 0;
+            transition: opacity 1.2s ease-in-out, transform 6s ease-in-out;
+            transform: scale(1);
             z-index: 0;
+            filter: brightness(0.7);
         }
 
-        /* Default: show first image */
-        .image-hover-container img:nth-child(1) {
+        .image-slider-container img.active {
             opacity: 1;
-            position: relative;
             z-index: 1;
+            transform: scale(1.1);
         }
 
-        /* On hover: first image disappear */
-        .image-hover-container:hover img:nth-child(1) {
-            opacity: 0;
+        /* Overlay gelap untuk teks */
+        .overlay {
             position: absolute;
-            z-index: 0;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 2;
         }
 
-        /* On hover: show second image */
-        .image-hover-container:hover img:nth-child(2) {
-            opacity: 1;
-            position: relative;
-            z-index: 1;
-            animation: fadeToggle 3s infinite;
-        }
-
-        /* On hover: show third image with delay */
-        .image-hover-container:hover img:nth-child(3) {
-            opacity: 0;
+       .welcome-text {
             position: absolute;
-            z-index: 0;
-            animation: fadeToggleReverse 3s infinite;
-            animation-delay: 1.5s;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 3;
+            color: #fff;
+            font-size: clamp(1.2rem, 3vw, 2.5rem);
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 0 3px 8px rgba(0,0,0,0.7);
+            animation: fadeInUp 1.5s ease forwards;
+            opacity: 0;
         }
 
-        @keyframes fadeToggle {
-            0%, 50% { opacity: 1; }
-            50.01%, 100% { opacity: 0; }
+        /* Animasi fadeInUp */
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            100% {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
         }
 
-        @keyframes fadeToggleReverse {
-            0%, 50% { opacity: 0; }
-            50.01%, 100% { opacity: 1; }
+        /* Spacer supaya konten di bawah tidak terlalu mepet */
+        .content-spacer {
+            height: 100px;
+            background: #f8f9fa;
+            flex-shrink: 0;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #0d6efd; /* bootstrap primary */
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            flex-shrink: 0;
+        }
+        footer h5 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        footer p {
+            margin: 0.2rem 0;
+        }
+        footer a {
+            color: #ffc107; /* amber */
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body>
 
-    <!-- Navbar -->
-    <nav class="bg-white shadow-md px-6 py-4 flex justify-between items-center">
-        <div class="text-2xl font-bold text-blue-700">BukuTamu</div>
-        <div class="space-x-4">
-            <a href="{{ route('login') }}" class="px-4 py-2 rounded-md bg-blue-600 hover:bg-blue-700 text-white font-semibold transition duration-300">Login</a>
-            <a href="{{ route('register') }}" class="px-4 py-2 rounded-md bg-green-600 hover:bg-green-700 text-white font-semibold transition duration-300">Register</a>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="flex-grow flex items-center justify-center px-4 py-12">
-        <div class="text-center max-w-3xl space-y-8">
-            <h1 class="text-4xl font-extrabold text-gray-800 mb-4">Selamat Datang di Laravel</h1>
-            <p class="text-gray-600 text-lg mb-8">
-                Mulailah membangun aplikasi webmu dengan cepat dan mudah menggunakan Laravel. Hover pada gambar untuk melihat foto berganti!
-            </p>
-
-            <!-- Gambar hover -->
-            <div class="image-hover-container mx-auto">
-<img src="{{ asset('img/wikrama.jpg') }}" alt="Wikrama" />
-<img src="{{ asset('img/wikrama.jpg') }}" alt="Wikrama" />
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container d-flex align-items-center">
+        <!-- Logo di sebelah kiri -->
+        <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
+            <img src="{{ asset('img/logo.jpeg') }}" alt="Logo Wikrama" style="width: 40px; height: auto; margin-right: 10px;">
+            BukuTamu
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <div class="navbar-nav">
+                <a class="nav-link" href="{{ route('login') }}">Login</a>
+                <a class="nav-link" href="{{ route('register') }}">Register</a>
             </div>
         </div>
-    </main>
+    </div>
+</nav>
+
+<!-- Image Slider -->
+<div class="image-slider-container" id="imageSlider">
+    <img src="{{ asset('img/wikrama1.jpg') }}" alt="Wikrama 1" class="active" />
+    <img src="{{ asset('img/wikrama2.jpg') }}" alt="Wikrama 2" />
+    <img src="{{ asset('img/wikrama3.jpg') }}" alt="Wikrama 3" />
+    <div class="overlay"></div>
+    <div class="welcome-text">
+        Selamat Datang di Buku Tamu Digital SMK Wikrama 1 Garut
+    </div>
+</div>
+
+<!-- Spacer supaya konten di bawah tidak terlalu mepet -->
+<div class="content-spacer"></div>
+
+<!-- Footer -->
+<footer>
+    <h5>Kontak Sekolah</h5>
+    <p>Alamat: Jalan Otto Iskandardinata kampung tanjung, RT.003/RW.013, Pasawahan, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151</p>
+    <p>Telepon: <a href="tel:+628112232880">0811-2232-880</a></p>
+    <p>Email: <a href="mailto:info@smkwikrama1garut.sch.id">info@smkwikrama1garut.sch.id</a></p>
+</footer>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const slider = document.getElementById('imageSlider');
+    const slides = slider.querySelectorAll('img');
+    let currentIndex = 0;
+
+    function showNextSlide() {
+        slides[currentIndex].classList.remove('active');
+        currentIndex = (currentIndex + 1) % slides.length;
+        slides[currentIndex].classList.add('active');
+    }
+
+    setInterval(showNextSlide, 5000);
+</script>
 
 </body>
 </html>
