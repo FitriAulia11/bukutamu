@@ -9,17 +9,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        body, html {
+        html, body {
             margin: 0;
             padding: 0;
             height: 100%;
-            width: 100%;
-            overflow-x: hidden;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #111;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+        }
+
+        main {
+            flex: 1;
         }
 
         .navbar {
@@ -29,13 +30,14 @@
             z-index: 20;
             background: rgba(0, 123, 255, 0.85);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: background 0.3s ease;
         }
+
         .navbar-nav .nav-link {
             color: #e0e0e0 !important;
             font-weight: 500;
             transition: color 0.3s ease;
         }
+
         .navbar-nav .nav-link:hover {
             color: #fff !important;
             text-shadow: 0 0 5px rgba(255,255,255,0.7);
@@ -47,7 +49,7 @@
             height: 75vh;
             overflow: hidden;
             background: #000;
-            margin-top: 56px; /* height navbar */
+            padding-top: 56px;
         }
 
         .image-slider-container img {
@@ -69,7 +71,6 @@
             transform: scale(1.1);
         }
 
-        /* Overlay gelap untuk teks */
         .overlay {
             position: absolute;
             top: 0; left: 0;
@@ -79,7 +80,7 @@
             z-index: 2;
         }
 
-       .welcome-text {
+        .welcome-text {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -94,7 +95,6 @@
             opacity: 0;
         }
 
-        /* Animasi fadeInUp */
         @keyframes fadeInUp {
             0% {
                 opacity: 0;
@@ -106,34 +106,50 @@
             }
         }
 
-        /* Spacer supaya konten di bawah tidak terlalu mepet */
-        .content-spacer {
-            height: 100px;
-            background: #f8f9fa;
-            flex-shrink: 0;
+        .content {
+            padding: 40px 20px;
+            background-color: #fff;
         }
 
-        /* Footer styling */
+        /* About Section baru */
+        .about-text {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: all 0.8s ease;
+        }
+        .about-image {
+            opacity: 0;
+            transform: translateX(30px);
+            transition: all 0.8s ease;
+        }
+
         footer {
-            background-color:rgb(15, 69, 150); /* bootstrap primary */
+            background-color: rgb(15, 69, 150);
             color: white;
             padding: 2rem 1rem;
             text-align: center;
-            flex-shrink: 0;
         }
+
         footer h5 {
             font-weight: 700;
             margin-bottom: 1rem;
         }
+
         footer p {
             margin: 0.2rem 0;
         }
+
         footer a {
-            color: #ffc107; /* amber */
+            color: #ffc107;
             text-decoration: none;
         }
+
         footer a:hover {
             text-decoration: underline;
+        }
+
+        .object-fit-cover {
+            object-fit: cover;
         }
     </style>
 </head>
@@ -141,7 +157,6 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container d-flex align-items-center">
-        <!-- Logo di sebelah kiri -->
         <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
             <img src="{{ asset('img/logo.png') }}" alt="Logo Wikrama" style="width: 40px; height: auto; margin-right: 10px;">
             BukuTamu
@@ -159,30 +174,52 @@
     </div>
 </nav>
 
-<!-- Image Slider -->
-<div class="image-slider-container" id="imageSlider">
-    <img src="{{ asset('img/wikrama1.jpg') }}" alt="Wikrama 1" class="active" />
-    <img src="{{ asset('img/wikrama2.jpg') }}" alt="Wikrama 2" />
-    <img src="{{ asset('img/wikrama3.jpg') }}" alt="Wikrama 3" />
-    <div class="overlay"></div>
-    <div class="welcome-text">
-        Selamat Datang di Buku Tamu Digital SMK Wikrama 1 Garut
+<main>
+    <div class="image-slider-container" id="imageSlider">
+        <img src="{{ asset('img/wikrama1.jpg') }}" alt="Wikrama 1" class="active" />
+        <img src="{{ asset('img/foto.jpg') }}" alt="Wikrama 2" />
+        <img src="{{ asset('img/wikrama3.jpg') }}" alt="Wikrama 3" />
+        <div class="overlay"></div>
+        <div class="welcome-text">
+            Selamat Datang di Buku Tamu Digital SMK Wikrama 1 Garut
+        </div>
     </div>
-</div>
 
-<!-- Spacer supaya konten di bawah tidak terlalu mepet -->
-<div class="content-spacer"></div>
+    <!-- About Section tanpa card, teks kiri & gambar kanan, animasi -->
+    <div class="content" id="about">
+      <div class="container py-5">
+        <div class="row align-items-center justify-content-center gx-5">
+          <!-- Teks kiri -->
+          <div class="col-lg-6 about-text">
+            <h3 class="text-primary fw-bold mb-4">Tentang Buku Tamu Digital</h3>
+            <p class="text-secondary" style="line-height: 1.7; font-size: 1.1rem;">
+              Buku Tamu Digital ini merupakan sistem yang digunakan oleh SMK Wikrama 1 Garut untuk mendata kunjungan tamu secara efisien dan modern. Melalui sistem ini, setiap tamu yang datang dapat mengisi data diri, keperluan, serta waktu kunjungan dengan cepat dan mudah.
+            </p>
+            <p class="text-secondary" style="line-height: 1.7; font-size: 1.1rem;">
+              Data yang dikumpulkan digunakan untuk keperluan dokumentasi, keamanan, dan peningkatan layanan sekolah terhadap pengunjung. Sistem ini membantu sekolah dalam mencatat semua aktivitas kunjungan dengan lebih rapi dan terstruktur.
+            </p>
+            <p class="fw-semibold text-dark mt-3" style="font-size: 1.1rem;">
+              <span class="text-primary">Silakan login</span> untuk mengisi data kunjungan Anda sebagai tamu.
+            </p>
+            <a href="{{ route('login') }}" class="btn btn-primary mt-3 px-4">Login Sekarang</a>
+          </div>
+          <!-- Gambar kanan -->
+          <div class="col-lg-5 about-image">
+            <img src="{{ asset('img/wikrama1.jpg') }}" alt="Buku Tamu Digital" class="img-fluid rounded-4 shadow-lg" style="min-height: 300px; object-fit: cover; width: 100%;">
+          </div>
+        </div>
+      </div>
+    </div>
+</main>
 
-
-<!-- Footer -->
 <footer>
     <h5>Kontak Sekolah</h5>
-    <p>Alamat: Jalan Otto Iskandardinata kampung tanjung, RT.003/RW.013, Pasawahan, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151</p>
+    <p>Alamat: Jalan Otto Iskandardinata kampung Tanjung, RT.003/RW.013, Pasawahan, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151</p>
     <p>Telepon: <a href="tel:+628112232880">0811-2232-880</a></p>
     <p>Email: <a href="mailto:info@smkwikrama1garut.sch.id">info@smkwikrama1garut.sch.id</a></p>
 </footer>
 
-<!-- Bootstrap JS Bundle -->
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
@@ -197,6 +234,25 @@
     }
 
     setInterval(showNextSlide, 5000);
+
+    // Animasi fade + slide on scroll untuk About Section
+    function animateAboutSection() {
+        const aboutText = document.querySelector('.about-text');
+        const aboutImage = document.querySelector('.about-image');
+        const triggerPoint = window.innerHeight * 0.85;
+        const aboutSectionTop = aboutText.getBoundingClientRect().top;
+
+        if (aboutSectionTop < triggerPoint) {
+            aboutText.style.opacity = '1';
+            aboutText.style.transform = 'translateX(0)';
+            aboutImage.style.opacity = '1';
+            aboutImage.style.transform = 'translateX(0)';
+            window.removeEventListener('scroll', animateAboutSection);
+        }
+    }
+
+    window.addEventListener('scroll', animateAboutSection);
+    window.addEventListener('load', animateAboutSection);
 </script>
 
 </body>
