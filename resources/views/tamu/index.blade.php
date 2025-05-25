@@ -2,7 +2,11 @@
 
 @section('content')
 <div class="container mt-5">
-    <h3 class="mb-4">Data Tamu</h3>
+    <div class="d-flex justify-content-start mb-4">
+        <a href="{{ route('form.tamu.create') }}" class="btn btn-primary fw-semibold">
+            <i class="bi bi-plus-lg me-2"></i> Tambah Data Baru
+        </a>
+    </div>
 
     {{-- Search dan Filter --}}
     <form method="GET" action="{{ route('tamu.index') }}" class="row g-3 mb-4">
@@ -10,7 +14,7 @@
             <input type="text" name="search" class="form-control" placeholder="Cari nama tamu..." value="{{ request('search') }}">
         </div>
         <div class="col-md-4">
-            <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}">
+            <input type="datetime-local" name="tanggal" class="form-control" value="{{ request('tanggalValue') }}">
         </div>
         <div class="col-md-3">
             <button type="submit" class="btn btn-primary w-100">Cari</button>
@@ -59,10 +63,5 @@
     <div class="d-flex justify-content-center mt-3">
         {{ $tamus->withQueryString()->links() }}
     </div>
-
-    {{-- Tombol Tambah --}}
-    <a href="{{ route('form.tamu.create') }}" class="btn btn-outline-primary mt-4 w-100 fw-semibold">
-        <i class="bi bi-plus-lg me-2"></i> Tambah Data Baru
-    </a>
 </div>
 @endsection

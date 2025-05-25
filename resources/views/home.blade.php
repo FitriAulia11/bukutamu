@@ -17,8 +17,8 @@
                     {{ __('You are logged in!') }}
 
                     <div class="mt-4">
-                        <a href="{{ url('/dashboard') }}" class="btn btn-primary">
-                            Ke Dashboard User
+                        <a href="{{ url('/tamu') }}" class="btn btn-primary">
+                            Ke Halaman Tamu
                         </a>
                     </div>
                 </div>
