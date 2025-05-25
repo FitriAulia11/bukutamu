@@ -17,7 +17,8 @@ Route::get('/redirect-role', function () {
         if (Auth::user()->role === 'admin') {
             return redirect('/admin/dashboard');
         } elseif (Auth::user()->role === 'user') {
-            return redirect('/dashboard');
+            // Redirect ke halaman profile atau halaman lain yang kamu mau
+            return redirect('/tamu');
         }
     }
     return abort(403);
@@ -40,16 +41,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 // Route khusus user
 Route::middleware(['auth', 'role:user'])->group(function () {
-    Route::get('/dashboard', function () {
-         return view('user.dashboard');
-    });
+    // Hapus route dashboard user
+    // Route::get('/dashboard', function () {
+    //     return view('user.dashboard');
+    // });
 
- Route::get('/profile', [UserController::class, 'formTamu'])->name('form.tamu');          // tampilkan form
- Route::post('/profile', [UserController::class, 'storeTamu'])->name('form.tamu.store');  // proses simpan data
+    // Route profile form tamu
+    Route::get('/profile', [UserController::class, 'formTamu'])->name('form.tamu');          // tampilkan form
+    Route::post('/profile', [UserController::class, 'storeTamu'])->name('form.tamu.store');  // proses simpan data
 
-Route::get('/tamu', [UserController::class, 'indexTamu'])->name('tamu.index');
-Route::get('/form/tamu/create', [UserController::class, 'create'])->name('form.tamu.create');
-Route::post('/form/tamu/store', [UserController::class, 'store'])->name('form.tamu.store');
-Route::get('/form/tamu/{id}', [UserController::class, 'show'])->name('user.show');
+    // Route tamu lainnya
+    Route::get('/tamu', [UserController::class, 'indexTamu'])->name('tamu.index');
+    Route::get('/form/tamu/create', [UserController::class, 'create'])->name('form.tamu.create');
+    Route::post('/form/tamu/store', [UserController::class, 'store'])->name('form.tamu.store');
+    Route::get('/form/tamu/{id}', [UserController::class, 'show'])->name('user.show');
 });
-

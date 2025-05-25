@@ -8,11 +8,6 @@ use Carbon\Carbon;
 
 class UserController extends Controller
 {
-    public function dashboard()
-    {
-        return view('user.dashboard');
-    }
-
     public function formTamu()
     {
         return view('user.form_tamu');
