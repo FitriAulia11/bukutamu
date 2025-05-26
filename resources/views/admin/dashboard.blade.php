@@ -7,51 +7,54 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         body {
-            display: flex;
             margin: 0;
+            display: flex;
+            font-family: Arial, sans-serif;
         }
 
         .sidebar {
-            width: 220px;
-            height: 100vh;
-            background-color: #000;
-            color: #fff;
-            padding-top: 20px;
+            background-color: #343a40;
+            color: white;
+            padding: 20px;
+            width: 250px;
+            min-height: 100vh;
             position: fixed;
-            font-size: 16px;
-            font-weight: 500;
         }
 
         .sidebar h4 {
-            font-size: 22px;
+            color: white;
             margin-bottom: 30px;
-            text-align: center;
-            color: #ffc107;
+            font-weight: bold;
         }
 
-        .sidebar a {
+        .sidebar a, .sidebar button.logout-link-button {
             display: block;
-            padding: 14px 20px;
-            color: #fff;
+            color: white;
+            padding: 10px 0;
             text-decoration: none;
-            transition: 0.3s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: color 0.3s;
         }
 
-        .sidebar a i {
-            margin-right: 10px;
+        .sidebar a:hover,
+        .sidebar button.logout-link-button:hover {
             color: #ffc107;
         }
 
-        .sidebar a:hover {
-            background-color: #343a40;
-            color: #ffc107;
+        .sidebar i {
+            margin-right: 8px;
         }
 
         .main-content {
-            margin-left: 220px;
+            margin-left: 250px;
             padding: 30px;
-            width: calc(100% - 220px);
             background-color: #f8f9fa;
+            width: calc(100% - 250px);
             min-height: 100vh;
         }
 
@@ -69,6 +72,7 @@
 
         .bg-yellow {
             background-color: #ffc107;
+            color: #343a40;
         }
 
         .card-icon {
@@ -82,36 +86,42 @@
 </head>
 <body>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h4>Admin Panel</h4>
-        <a href="{{ url('/admin/dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
-        <a href="{{ url('/admin/jumlah-tamu') }}"><i class="bi bi-bar-chart-line-fill"></i> Jumlah Tamu</a>
-        <a href="{{ url('/admin/form-input') }}"><i class="bi bi-ui-checks-grid"></i> Form Input</a>
-        <a href="{{ url('/admin/pengguna') }}"><i class="bi bi-people-fill"></i> Pengguna</a>
-        <a href="{{ url('/logout') }}"><i class="bi bi-box-arrow-right"></i> Logout</a>
-    </div>
+<!-- Sidebar -->
+<div class="sidebar">
+    <h4>Admin Panel</h4>
+    <a href="{{ url('/admin/dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a href="{{ url('/admin/jumlah-tamu') }}"><i class="bi bi-bar-chart-line-fill"></i> Jumlah Tamu</a>
+    <a href="{{ url('/admin/form-input') }}"><i class="bi bi-ui-checks-grid"></i> Form Input</a>
+    <a href="{{ url('/admin/pengguna') }}"><i class="bi bi-people-fill"></i> Pengguna</a>
 
-    <!-- Main Content -->
-    <div class="main-content">
-        <h2 class="mb-4">Dashboard Admin</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card-box bg-green text-center">
-                    <div class="card-icon mb-2"><i class="bi bi-people-fill"></i></div>
-                    <h5>Total Pengguna</h5>
-                    <h2>{{ $totalPengguna }}</h2>
-                </div>
+    <form action="{{ route('logout') }}" method="POST" class="mt-3">
+        @csrf
+        <button type="submit" class="logout-link-button">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </button>
+    </form>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+    <h2 class="mb-4">Dashboard Admin</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card-box bg-green text-center">
+                <div class="card-icon mb-2"><i class="bi bi-people-fill"></i></div>
+                <h5>Total Pengguna</h5>
+                <h2>{{ $totalPengguna }}</h2>
             </div>
-            <div class="col-md-6">
-                <div class="card-box bg-yellow text-center text-dark">
-                    <div class="card-icon mb-2"><i class="bi bi-journal-text"></i></div>
-                    <h5>Total Tamu</h5>
-                    <h2>{{ $totalTamu }}</h2>
-                </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card-box bg-yellow text-center">
+                <div class="card-icon mb-2"><i class="bi bi-journal-text"></i></div>
+                <h5>Total Tamu</h5>
+                <h2>{{ $totalTamu }}</h2>
             </div>
         </div>
     </div>
+</div>
 
 </body>
 </html>
