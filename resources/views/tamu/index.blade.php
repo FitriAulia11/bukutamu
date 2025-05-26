@@ -166,7 +166,7 @@
             </div>
             <div class="col-md-6">
                 <label for="telepon" class="form-label">No. Telepon</label>
-                <input type="text" name="telepon" class="form-control" required>
+                <input type="tel" name="telepon" class="form-control" pattern="[0-9]*" input-mode="numeric" required>
             </div>
             <div class="col-md-12">
                 <label for="alamat" class="form-label">Alamat</label>
@@ -201,7 +201,7 @@
   </div>
 </div>
 
-{{-- Script Detail --}}
+{{-- Script Detail & Validasi --}}
 <script>
     function tampilkanDetailTamu(nama, telepon, alamat, keperluan, kategori, tanggal) {
         document.getElementById('detail-nama').innerText = nama;
@@ -211,5 +211,14 @@
         document.getElementById('detail-kategori').innerText = kategori;
         document.getElementById('detail-tanggal').innerText = tanggal;
     }
+
+    // Validasi agar input No. Telepon hanya angka
+    document.addEventListener('DOMContentLoaded', function () {
+        const teleponInput = document.querySelector('input[name="telepon"]');
+        teleponInput.addEventListener('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
 </script>
+
 @endsection
