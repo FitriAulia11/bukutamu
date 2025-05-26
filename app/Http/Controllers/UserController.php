@@ -13,27 +13,28 @@ class UserController extends Controller
         return view('user.form_tamu');
     }
 
-    public function storeTamu(Request $request)
-    {
-        $request->validate([
-            'nama' => 'required|string',
-            'telepon' => 'required|string',
-            'alamat' => 'required|string',
-            'keperluan' => 'required|string',
-            'kategori' => 'required|string',
-        ]);
+public function storeTamu(Request $request)
+{
+    $request->validate([
+        'nama' => 'required|string',
+        'telepon' => 'required|string',
+        'tanggal' => 'required|date',
+        'alamat' => 'required|string',
+        'keperluan' => 'required|string',
+        'kategori' => 'required|string',
+    ]);
 
-        Tamu::create([
-            'nama' => $request->nama,
-            'telepon' => $request->telepon,
-            'tanggal_datang' => Carbon::now(),
-            'alamat' => $request->alamat,
-            'keperluan' => $request->keperluan,
-            'kategori' => $request->kategori,
-        ]);
+    Tamu::create([
+        'nama' => $request->nama,
+        'telepon' => $request->telepon,
+        'tanggal_datang' => Carbon::parse($request->tanggal), 
+        'alamat' => $request->alamat,
+        'keperluan' => $request->keperluan,
+        'kategori' => $request->kategori,
+    ]);
 
-        return redirect()->back()->with('success', 'Data tamu berhasil disimpan.');
-    }
+    return redirect()->back()->with('success', 'Data tamu berhasil disimpan.');
+}
        public function create()
     {
         return view('tamu.create'); // file blade untuk form input

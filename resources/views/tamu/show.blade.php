@@ -23,7 +23,7 @@
                 <dd class="col-sm-8 fs-5">{{ $tamu->telepon }}</dd>
 
                 <dt class="col-sm-4 fw-semibold text-secondary">Tanggal & Jam Datang</dt>
-                <dd class="col-sm-8 fs-5">{{ \Carbon\Carbon::parse($tamu->tanggal)->format('d M Y H:i') }}</dd>
+                <dd class="col-sm-8 fs-5">{{ \Carbon\Carbon::parse($tamu->tanggal_datang)->format('d M Y H:i') }}</dd>
 
                 <dt class="col-sm-4 fw-semibold text-secondary">Alamat</dt>
                 <dd class="col-sm-8 fs-5">{{ $tamu->alamat }}</dd>

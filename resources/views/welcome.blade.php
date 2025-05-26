@@ -124,7 +124,7 @@
         }
 
         footer {
-            background-color: rgb(15, 69, 150);
+            background-color: rgb(13, 35, 79);
             color: white;
             padding: 2rem 1rem;
             text-align: center;
