@@ -20,7 +20,7 @@ Route::get('/redirect-role', function () {
             return redirect('/admin/dashboard');
         } elseif (Auth::user()->role === 'user') {
             // Redirect ke halaman profile atau halaman lain yang kamu mau
-            return redirect('/tamu');
+            return redirect('/tamu.index');
         }
     }
     return abort(403);
@@ -42,6 +42,7 @@ Route::get('/admin/jumlah-tamu', [AdminController::class, 'jumlahTamu'])->middle
 Route::middleware(['auth', 'role:user'])->group(function () {
 
     // Route profile form tamu
+    Route::get('/tamu.index', [UserController::class, 'indexTamu'])->name('tamu.index');
     Route::get('/profile', [UserController::class, 'formTamu'])->name('form.tamu');          // tampilkan form
     Route::post('/profile', [UserController::class, 'storeTamu'])->name('form.tamu.store');  // proses simpan data
 
