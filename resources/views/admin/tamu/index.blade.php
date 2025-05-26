@@ -4,12 +4,15 @@
     <meta charset="UTF-8">
     <title>Data Tamu - Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    
     <style>
         body {
             overflow-x: hidden;
         }
+
         .sidebar {
             width: 220px;
             height: 100vh;
@@ -17,8 +20,14 @@
             color: #fff;
             padding-top: 20px;
             position: fixed;
-            font-size: 16px;
-            font-weight: 500;
+            top: 0;
+            left: 0;
+            transition: all 0.3s ease;
+            z-index: 1050;
+        }
+
+        .sidebar.hide {
+            margin-left: -220px;
         }
 
         .sidebar h4 {
@@ -47,44 +56,54 @@
         }
 
         .content {
-            margin-left: 240px;
+            margin-left: 220px;
             transition: margin-left 0.3s ease;
+            padding: 20px;
         }
+
         .content.full {
             margin-left: 0;
         }
+
         .toggle-btn {
             position: fixed;
             top: 15px;
-            left: 15px;
+            left: 235px;
             z-index: 1100;
+            transition: left 0.3s ease;
+        }
+
+        /* Saat sidebar disembunyikan, geser tombol toggle */
+        .sidebar.hide ~ #mainContent .toggle-btn {
+            left: 15px;
         }
     </style>
 </head>
 <body>
 
 <!-- Toggle Button -->
-<button class="btn btn-secondary toggle-btn" onclick="toggleSidebar()">
-    <i class="bi bi-list"></i>
+<button id="toggleBtn" class="btn btn-secondary toggle-btn" onclick="toggleSidebar()">
+    <i id="toggleIcon" class="bi bi-chevron-left"></i>
 </button>
 
 <!-- Sidebar -->
 <div id="sidebar" class="sidebar">
     <h4 class="text-white mb-4">Admin Panel</h4>
-    <a href="{{ url('/admin/dashboard') }}"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
-    <a href="{{ url('/admin/jumlah-tamu') }}"><i class="bi bi-bar-chart-line-fill me-2"></i> Jumlah Tamu</a>
-    <a href="{{ url('/admin/form-input') }}"><i class="bi bi-ui-checks-grid me-2"></i> Form Input</a>
-    <a href="{{ url('/admin/pengguna') }}"><i class="bi bi-people-fill me-2"></i> Pengguna</a>
-    <form action="{{ route('logout') }}" method="POST" class="mt-3">
-        @csrf
-        <button type="submit" class="btn btn-link text-start text-white p-0 text-decoration-none">
-            <i class="bi bi-box-arrow-right me-2"></i> Logout
-        </button>
-    </form>
+    <a href="{{ url('/admin/dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a href="{{ url('/admin/jumlah-tamu') }}"><i class="bi bi-bar-chart-line-fill"></i> Jumlah Tamu</a>
+    <a href="{{ url('/admin/form-input') }}"><i class="bi bi-ui-checks-grid"></i> Form Input</a>
+    <a href="{{ url('/admin/pengguna') }}"><i class="bi bi-people-fill"></i> Pengguna</a>
+    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    <i class="bi bi-box-arrow-right"></i> Logout
+</a>
+<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+    @csrf
+</form>
+
 </div>
 
 <!-- Main Content -->
-<div id="mainContent" class="content p-4">
+<div id="mainContent" class="content">
     <div class="container">
         <h4 class="mb-4">Data Tamu (Admin)</h4>
 
@@ -151,8 +170,21 @@
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         const content = document.getElementById('mainContent');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const toggleIcon = document.getElementById('toggleIcon');
+
         sidebar.classList.toggle('hide');
         content.classList.toggle('full');
+
+        if (sidebar.classList.contains('hide')) {
+            toggleBtn.style.left = '15px';
+            toggleIcon.classList.remove('bi-chevron-left');
+            toggleIcon.classList.add('bi-chevron-right');
+        } else {
+            toggleBtn.style.left = '235px';
+            toggleIcon.classList.remove('bi-chevron-right');
+            toggleIcon.classList.add('bi-chevron-left');
+        }
     }
 </script>
 

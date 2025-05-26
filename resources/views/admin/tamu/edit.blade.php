@@ -1,18 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+    <meta charset="UTF-8">
     <title>Edit Data Tamu</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background-color: #ffffff;
+            font-size: 20px;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .btn {
+            border-radius: 8px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+    </style>
 </head>
 <body>
-<div class="container mt-5">
-    <h4>Edit Tamu</h4>
-    <form action="{{ route('admin.tamu.update', $tamu->id) }}" method="POST">
-        @csrf @method('PUT')
-        @include('admin.tamu.form', ['tamu' => $tamu])
-        <button class="btn btn-primary">Update</button>
-        <a href="{{ route('admin.tamu.index') }}" class="btn btn-secondary">Kembali</a>
-    </form>
+
+<div class="container py-5">
+    <div class="mx-auto" style="max-width: 720px;">
+        <div class="card">
+            <div class="card-header">
+                Edit Data Tamu
+            </div>
+            <div class="card-body">
+                <form action="{{ route('admin.tamu.update', $tamu->id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    @include('admin.tamu.form', ['tamu' => $tamu])
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ route('admin.tamu.index') }}" class="btn btn-secondary">
+                            <i class="bi bi-arrow-left-circle me-1"></i> Kembali
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save2 me-1"></i> Update Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Bootstrap Icons & JS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
