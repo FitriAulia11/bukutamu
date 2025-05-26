@@ -15,7 +15,7 @@ return new class extends Migration
         $table->id();
         $table->string('nama');
         $table->string('telepon');
-        $table->timestamp('tanggal_datang')->useCurrent(); // otomatis waktu input
+        $table->timestamp('tanggal_datang')->useCurrent(); 
         $table->text('alamat');
         $table->string('keperluan');
         $table->string('kategori');
