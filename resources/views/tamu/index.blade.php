@@ -23,14 +23,32 @@
         });
     </script>
     @endif
+    <style>
+    table tbody tr:hover {
+        background-color: #f1f1f1;
+        cursor: pointer;
+    }
+</style>
 
-    {{-- Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold text-primary">📋 Daftar Tamu</h3>
-        <button class="btn btn-outline-primary fw-semibold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahTamu">
-            <i class="bi bi-plus-circle me-2"></i> Tambah Tamu
-        </button>
-    </div>
+
+{{-- Header --}}
+<div class="text-center mb-4">
+    <h2 class="fw-bold animate__animated animate__fadeInDown d-inline-block px-4 py-2 rounded shadow"
+        style="background: linear-gradient(90deg, #00bcd4, #2196f3); color: white; font-family: 'Segoe UI', sans-serif;">
+        <i class="bi bi-clipboard-data-fill me-2"></i> Daftar Tamu
+    </h2>
+</div>
+
+{{-- Tombol Tambah --}}
+<div class="text-start mb-4">
+    <button class="btn btn-lg text-white fw-semibold shadow-sm animate__animated animate__fadeInRight"
+        style="background: linear-gradient(90deg, #43cea2, #185a9d); border: none; border-radius: 30px; transition: 0.3s;"
+        onmouseover="this.style.filter='brightness(1.1)';"
+        onmouseout="this.style.filter='brightness(1)';"
+        data-bs-toggle="modal" data-bs-target="#modalTambahTamu">
+        <i class="bi bi-person-plus-fill me-2"></i> Tambah Tamu
+    </button>
+</div>
 
     {{-- Search dan Filter --}}
     <div class="card shadow-sm mb-4">
@@ -53,8 +71,8 @@
 
     {{-- Tabel Data --}}
     <div class="table-responsive">
-        <table class="table table-bordered table-hover shadow-sm align-middle">
-            <thead class="table-light text-center">
+<table class="table table-hover table-striped table-borderless shadow-sm align-middle rounded">
+<thead class="bg-primary text-white text-center">
                 <tr>
                     <th>#</th>
                     <th>Nama</th>
@@ -74,7 +92,8 @@
                         <td>{{ $tamu->telepon }}</td>
                         <td>{{ $tamu->alamat }}</td>
                         <td>{{ $tamu->keperluan }}</td>
-                        <td><span class="badge bg-info text-dark">{{ $tamu->kategori }}</span></td>
+                        <td><span class="badge bg-light text-primary border border-primary">{{ $tamu->kategori }}</span>
+</td>
                         <td>{{ \Carbon\Carbon::parse($tamu->tanggal_datang)->format('d M Y, H:i') }}</td>
                         <td class="text-center">
                             <button class="btn btn-sm btn-outline-info"
@@ -101,11 +120,16 @@
         </table>
     </div>
 
-    {{-- Pagination --}}
-    <div class="d-flex justify-content-center mt-4">
-        {{ $tamus->withQueryString()->links() }}
+   {{-- Pagination --}}
+<div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
+    <div class="text-muted small">
+        Menampilkan {{ $tamus->firstItem() }} sampai {{ $tamus->lastItem() }} dari total {{ $tamus->total() }} data
+    </div>
+    <div class="mt-2 mt-md-0">
+        {{ $tamus->withQueryString()->onEachSide(1)->links('pagination::bootstrap-5') }}
     </div>
 </div>
+
 
 {{-- Modal Detail Tamu --}}
 <div class="modal fade" id="modalDetailTamu" tabindex="-1" aria-labelledby="modalDetailTamuLabel" aria-hidden="true">
@@ -116,7 +140,7 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-            <dl class="row mb-0">
+<dl class="row mb-0 px-2 py-2">
                 <dt class="col-sm-4">Nama</dt>
                 <dd class="col-sm-8" id="detail-nama">-</dd>
 
@@ -160,7 +184,7 @@
             </div>
             <div class="col-md-6">
                 <label for="telepon" class="form-label">No. Telepon</label>
-                <input type="text" name="telepon" class="form-control" required>
+                <input type="tel" name="telepon" class="form-control" pattern="[0-9]*" input-mode="numeric" required>
             </div>
             <div class="col-md-12">
                 <label for="alamat" class="form-label">Alamat</label>
@@ -195,7 +219,7 @@
   </div>
 </div>
 
-{{-- Script Detail --}}
+{{-- Script Detail & Validasi --}}
 <script>
     function tampilkanDetailTamu(nama, telepon, alamat, keperluan, kategori, tanggal) {
         document.getElementById('detail-nama').innerText = nama;
@@ -205,5 +229,14 @@
         document.getElementById('detail-kategori').innerText = kategori;
         document.getElementById('detail-tanggal').innerText = tanggal;
     }
+
+    // Validasi agar input No. Telepon hanya angka
+    document.addEventListener('DOMContentLoaded', function () {
+        const teleponInput = document.querySelector('input[name="telepon"]');
+        teleponInput.addEventListener('input', function () {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+    });
 </script>
+
 @endsection
