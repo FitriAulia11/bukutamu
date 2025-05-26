@@ -158,7 +158,7 @@
             </div>
             <div class="col-md-6">
                 <label for="tanggal_datang" class="form-label">Tanggal & Jam Datang</label>
-                <input type="datetime-local" name="tanggal_datang" class="form-control" required>
+                <input type="datetime-local" name="tanggal" class="form-control" required>
             </div>
         </div>
         </div>
