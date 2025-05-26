@@ -122,6 +122,16 @@
             transform: translateX(30px);
             transition: all 0.8s ease;
         }
+        @keyframes floatButton {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+.float-animate {
+    animation: floatButton 2.5s ease-in-out infinite;
+}
+
 
         footer {
             background-color: rgb(13, 35, 79);
@@ -201,7 +211,7 @@
             <p class="fw-semibold text-dark mt-3" style="font-size: 1.1rem;">
               <span class="text-primary">Silakan login</span> untuk mengisi data kunjungan Anda sebagai tamu.
             </p>
-            <a href="{{ route('login') }}" class="btn btn-primary mt-3 px-4">Login Sekarang</a>
+<a href="{{ route('login') }}" class="btn btn-primary mt-3 px-4 float-animate">Login Sekarang</a>
           </div>
           <!-- Gambar kanan -->
           <div class="col-lg-5 about-image">
