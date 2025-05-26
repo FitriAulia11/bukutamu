@@ -40,10 +40,16 @@ Route::get('/admin/jumlah-tamu', [AdminController::class, 'jumlahTamu'])->middle
 
 // Route khusus user
 Route::middleware(['auth', 'role:user'])->group(function () {
-
+    Route::get('/dashboard', [User::class, 'dashboard']);
+Route::get('/admin/users/{id}', [UserController::class, 'show'])->name('user.show');
     // Route profile form tamu
     Route::get('/profile', [UserController::class, 'formTamu'])->name('form.tamu');          // tampilkan form
     Route::post('/profile', [UserController::class, 'storeTamu'])->name('form.tamu.store');  // proses simpan data
+
+    Route::get('/tamu', [UserController::class, 'indexTamu'])->name('tamu.index');
+Route::get('/tamu/create', [UserController::class, 'createTamu'])->name('tamu.create');
+Route::post('/tamu', [UserController::class, 'storeTamu'])->name('tamu.store');
+Route::get('/tamu/{tamu}', [UserController::class, 'showTamu'])->name('tamu.show');
 
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
@@ -55,6 +61,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 });
 });
 
+Route::get('/admin/form-tamu', [AdminController::class, 'formTamu'])->name('form.tamu.create');
+
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/form-input', [AdminTamuController::class, 'index'])->name('admin.tamu.index');
     Route::get('/form-input/create', [AdminTamuController::class, 'create'])->name('admin.tamu.create');
@@ -63,3 +71,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/form-input/{id}', [AdminTamuController::class, 'update'])->name('admin.tamu.update');
     Route::delete('/form-input/{id}', [AdminTamuController::class, 'destroy'])->name('admin.tamu.destroy');
 });
+
+
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/'); // redirect ke halaman welcome
+})->name('logout');
