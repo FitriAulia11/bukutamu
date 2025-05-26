@@ -24,13 +24,14 @@
     </script>
     @endif
 
-    {{-- Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold text-primary">📋 Daftar Tamu</h3>
-        <button class="btn btn-outline-primary fw-semibold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahTamu">
-            <i class="bi bi-plus-circle me-2"></i> Tambah Tamu
-        </button>
-    </div>
+{{-- Header --}}
+
+<div class="mb-4">
+    <button class="btn btn-success fw-semibold shadow px-4 py-2 rounded-pill btn-hover-effect"
+        data-bs-toggle="modal" data-bs-target="#modalTambahTamu">
+        <i class="bi bi-plus-circle me-2"></i> Tambah Tamu
+    </button>
+</div>
 
     {{-- Search dan Filter --}}
     <div class="card shadow-sm mb-4">
@@ -101,11 +102,16 @@
         </table>
     </div>
 
-    {{-- Pagination --}}
-    <div class="d-flex justify-content-center mt-4">
-        {{ $tamus->withQueryString()->links() }}
+   {{-- Pagination --}}
+<div class="d-flex justify-content-between align-items-center mt-4 flex-wrap">
+    <div class="text-muted small">
+        Menampilkan {{ $tamus->firstItem() }} sampai {{ $tamus->lastItem() }} dari total {{ $tamus->total() }} data
+    </div>
+    <div class="mt-2 mt-md-0">
+        {{ $tamus->withQueryString()->onEachSide(1)->links('pagination::bootstrap-5') }}
     </div>
 </div>
+
 
 {{-- Modal Detail Tamu --}}
 <div class="modal fade" id="modalDetailTamu" tabindex="-1" aria-labelledby="modalDetailTamuLabel" aria-hidden="true">
