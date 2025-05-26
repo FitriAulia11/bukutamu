@@ -2,52 +2,82 @@
 
 @section('content')
 <div class="container mt-5">
-    <div class="d-flex justify-content-start mb-4">
-        <button class="btn btn-primary fw-semibold" data-bs-toggle="modal" data-bs-target="#modalTambahTamu">
-            <i class="bi bi-plus-lg me-2"></i> Tambah Data Baru
+    
+    {{-- Notifikasi Sukses --}}
+    @if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                position: 'center',
+                toast: false,
+                customClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            });
+        });
+    </script>
+    @endif
+
+    {{-- Header --}}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-bold text-primary">📋 Daftar Tamu</h3>
+        <button class="btn btn-outline-primary fw-semibold shadow-sm" data-bs-toggle="modal" data-bs-target="#modalTambahTamu">
+            <i class="bi bi-plus-circle me-2"></i> Tambah Tamu
         </button>
     </div>
 
     {{-- Search dan Filter --}}
-    <form method="GET" action="{{ route('tamu.index') }}" class="row g-3 mb-4">
-        <div class="col-md-5">
-            <input type="text" name="search" class="form-control" placeholder="Cari nama tamu..." value="{{ request('search') }}">
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ route('tamu.index') }}" class="row g-3">
+                <div class="col-md-5">
+                    <input type="text" name="search" class="form-control" placeholder="🔍 Cari nama tamu..." value="{{ request('search') }}">
+                </div>
+                <div class="col-md-4">
+                    <input type="datetime-local" name="tanggal" class="form-control" value="{{ request('tanggalValue') }}">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search me-1"></i> Cari
+                    </button>
+                </div>
+            </form>
         </div>
-        <div class="col-md-4">
-            <input type="datetime-local" name="tanggal" class="form-control" value="{{ request('tanggalValue') }}">
-        </div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-primary w-100">Cari</button>
-        </div>
-    </form>
+    </div>
 
-    {{-- Tabel Data Tamu --}}
+    {{-- Tabel Data --}}
     <div class="table-responsive">
-        <table class="table table-bordered table-hover shadow-sm">
-            <thead class="table-primary">
+        <table class="table table-bordered table-hover shadow-sm align-middle">
+            <thead class="table-light text-center">
                 <tr>
-                    <th>No</th>
+                    <th>#</th>
                     <th>Nama</th>
                     <th>No. Telepon</th>
                     <th>Alamat</th>
                     <th>Keperluan</th>
                     <th>Kategori</th>
-                    <th>Tanggal & Jam Datang</th>
+                    <th>Tanggal & Jam</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($tamus as $index => $tamu)
                     <tr>
-                        <td>{{ $tamus->firstItem() + $index }}</td>
+                        <td class="text-center">{{ $tamus->firstItem() + $index }}</td>
                         <td>{{ $tamu->nama }}</td>
                         <td>{{ $tamu->telepon }}</td>
                         <td>{{ $tamu->alamat }}</td>
                         <td>{{ $tamu->keperluan }}</td>
-                        <td>{{ $tamu->kategori }}</td>
-                        <td>{{ \Carbon\Carbon::parse($tamu->tanggal_datang)->format('d M Y H:i') }}</td>
-                        <td>
-                            <button class="btn btn-sm btn-info"
+                        <td><span class="badge bg-info text-dark">{{ $tamu->kategori }}</span></td>
+                        <td>{{ \Carbon\Carbon::parse($tamu->tanggal_datang)->format('d M Y, H:i') }}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-info"
                                 data-bs-toggle="modal"
                                 data-bs-target="#modalDetailTamu"
                                 onclick="tampilkanDetailTamu(
@@ -58,13 +88,13 @@
                                     '{{ $tamu->kategori }}',
                                     '{{ \Carbon\Carbon::parse($tamu->tanggal_datang)->format('d M Y H:i') }}'
                                 )">
-                                Detail
+                                <i class="bi bi-eye"></i>
                             </button>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="8" class="text-center">Tidak ada data tamu ditemukan.</td>
+                        <td colspan="8" class="text-center text-muted">Tidak ada data tamu ditemukan.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -72,21 +102,21 @@
     </div>
 
     {{-- Pagination --}}
-    <div class="d-flex justify-content-center mt-3">
+    <div class="d-flex justify-content-center mt-4">
         {{ $tamus->withQueryString()->links() }}
     </div>
 </div>
 
-<!-- Modal Detail Tamu -->
+{{-- Modal Detail Tamu --}}
 <div class="modal fade" id="modalDetailTamu" tabindex="-1" aria-labelledby="modalDetailTamuLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title fw-bold" id="modalDetailTamuLabel">Detail Tamu</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-content border-0 shadow">
+        <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="modalDetailTamuLabel"><i class="bi bi-person-lines-fill me-2"></i>Detail Tamu</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-            <dl class="row">
+            <dl class="row mb-0">
                 <dt class="col-sm-4">Nama</dt>
                 <dd class="col-sm-8" id="detail-nama">-</dd>
 
@@ -107,20 +137,20 @@
             </dl>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
         </div>
     </div>
   </div>
 </div>
 
-<!-- Modal Tambah Data Baru -->
+{{-- Modal Tambah Data --}}
 <div class="modal fade" id="modalTambahTamu" tabindex="-1" aria-labelledby="modalTambahTamuLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
-    <form action="{{ route('form.tamu.store') }}" method="POST" class="modal-content">
+    <form action="{{ route('form.tamu.store') }}" method="POST" class="modal-content shadow border-0">
         @csrf
-        <div class="modal-header">
-            <h5 class="modal-title fw-bold" id="modalTambahTamuLabel">Tambah Data Tamu</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="modalTambahTamuLabel"><i class="bi bi-person-plus-fill me-2"></i>Tambah Tamu Baru</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
         <div class="row g-3">
@@ -144,13 +174,9 @@
                 <label for="kategori" class="form-label">Kategori</label>
                 <select name="kategori" id="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
                     <option value="" disabled {{ old('kategori') ? '' : 'selected' }}>-- Pilih Kategori --</option>
-                    <option value="Wali Santri" {{ old('kategori') == 'Wali Santri' ? 'selected' : '' }}>Wali Santri</option>
-                    <option value="Tamu Hotel" {{ old('kategori') == 'Tamu Hotel' ? 'selected' : '' }}>Tamu Hotel</option>
-                    <option value="Orangtua Siswa" {{ old('kategori') == 'Orangtua Siswa' ? 'selected' : '' }}>Orangtua Siswa</option>
-                    <option value="Kunjungan Dinas" {{ old('kategori') == 'Kunjungan Dinas' ? 'selected' : '' }}>Kunjungan Dinas</option>
-                    <option value="Calon Siswa" {{ old('kategori') == 'Calon Siswa' ? 'selected' : '' }}>Calon Siswa</option>
-                    <option value="Tokoh Masyarakat" {{ old('kategori') == 'Tokoh Masyarakat' ? 'selected' : '' }}>Tokoh Masyarakat</option>
-                    <option value="Kunjungan Sekolah" {{ old('kategori') == 'Kunjungan Sekolah' ? 'selected' : '' }}>Kunjungan Sekolah</option>
+                    @foreach(['Wali Santri','Tamu Hotel','Orangtua Siswa','Kunjungan Dinas','Calon Siswa','Tokoh Masyarakat','Kunjungan Sekolah'] as $kategori)
+                        <option value="{{ $kategori }}" {{ old('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}</option>
+                    @endforeach
                 </select>
                 @error('kategori')
                     <div class="invalid-feedback">{{ $message }}</div>
@@ -163,13 +189,13 @@
         </div>
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Simpan</button>
+            <button type="submit" class="btn btn-success"><i class="bi bi-save me-1"></i> Simpan</button>
         </div>
     </form>
   </div>
 </div>
 
-<!-- Script Show Detail -->
+{{-- Script Detail --}}
 <script>
     function tampilkanDetailTamu(nama, telepon, alamat, keperluan, kategori, tanggal) {
         document.getElementById('detail-nama').innerText = nama;
