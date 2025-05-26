@@ -98,7 +98,7 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
-    <h4>Admin Panel</h4>
+ <h4>Admin Panel</h4>
     <a href="{{ url('/admin/dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
     <a href="{{ url('/admin/jumlah-tamu') }}"><i class="bi bi-bar-chart-line-fill"></i> Jumlah Tamu</a>
     <a href="{{ url('/admin/form-input') }}"><i class="bi bi-ui-checks-grid"></i> Form Input</a>
@@ -114,28 +114,40 @@
 
 <!-- Main Content -->
 <div class="main-content">
-    <h2 class="mb-2">Dashboard Admin</h2>
-    <p class="text-muted fs-3 mb-4">Selamat datang, <strong>{{ Auth::user()->name }}</strong>! 👋</p>
+    <!-- Header -->
+    <div class="text-center text-lg-start mb-5">
+        <h2 class="fw-bold text-primary mb-2">
+            <i class="bi bi-speedometer2 me-2"></i> Dashboard Admin
+        </h2>
+        <p class="fs-5 text-muted mb-0">
+            Selamat datang, <strong class="text-dark">{{ Auth::user()->name }}</strong>! 👋 Semoga harimu menyenangkan.
+        </p>
+    </div>
 
+    <!-- Statistik Cards -->
     <div class="row">
         <!-- Total Pengguna -->
         <div class="col-md-6 mb-4">
             <a href="{{ url('/admin/pengguna') }}" class="text-decoration-none">
-                <div class="card-box bg-green text-center hover-card">
-                    <div class="card-icon mb-2"><i class="bi bi-people-fill"></i></div>
-                    <h5 class="text-white">Total Pengguna</h5>
+                <div class="card-box gradient-green text-center hover-card shadow">
+                    <div class="icon-circle mb-3">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <h5 class="text-white mb-1">Total Pengguna</h5>
                     <h2 class="text-white">{{ $totalPengguna }}</h2>
                 </div>
             </a>
         </div>
 
-        <!-- Total Tamu (arah ke Form Input) -->
+        <!-- Total Tamu -->
         <div class="col-md-6 mb-4">
             <a href="{{ url('/admin/form-input') }}" class="text-decoration-none">
-                <div class="card-box bg-yellow text-center hover-card">
-                    <div class="card-icon mb-2"><i class="bi bi-journal-text"></i></div>
-                    <h5>Total Tamu</h5>
-                    <h2>{{ $totalTamu }}</h2>
+                <div class="card-box gradient-yellow text-center hover-card shadow">
+                    <div class="icon-circle mb-3">
+                        <i class="bi bi-journal-text"></i>
+                    </div>
+                    <h5 class="text-dark mb-1">Total Tamu</h5>
+                    <h2 class="text-dark">{{ $totalTamu }}</h2>
                 </div>
             </a>
         </div>
@@ -143,13 +155,51 @@
 </div>
 
 <style>
-    .hover-card {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
+.main-content {
+    padding: 2rem;
+}
+
+.card-box {
+    padding: 30px 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease-in-out;
+}
+
+.hover-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+.gradient-green {
+    background: linear-gradient(135deg, #28a745, #218838);
+    color: #fff;
+}
+
+.gradient-yellow {
+    background: linear-gradient(135deg, #ffc107, #e0a800);
+    color: #212529;
+}
+
+.icon-circle {
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 28px;
+    border-radius: 50%;
+    margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+    .icon-circle {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
     }
 
-    .hover-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    .card-box {
+        padding: 25px 15px;
     }
+}
 </style>

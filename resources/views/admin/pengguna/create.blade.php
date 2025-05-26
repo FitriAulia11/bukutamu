@@ -126,10 +126,16 @@
                             <input type="datetime-local" name="tanggal" class="form-control" required>
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                            <a href="{{ url('/admin/pengguna') }}" class="btn btn-secondary">Kembali</a>
-                    </div>
+                    <div class="mt-4 d-flex justify-content-between">
+    <a href="{{ url('/admin/pengguna') }}" class="btn btn-outline-secondary px-4 py-2 shadow-sm">
+        <i class="bi bi-arrow-left me-2"></i> Kembali
+    </a>
+    
+    <button type="submit" class="btn btn-success px-4 py-2 shadow-sm">
+        <i class="bi bi-save me-2"></i> Simpan
+    </button>
+</div>
+
                 </form>
             </div>
         </div>

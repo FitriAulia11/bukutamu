@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>Data Tamu - Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
+    <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    
+
     <style>
         body {
             overflow-x: hidden;
@@ -58,7 +59,7 @@
         .content {
             margin-left: 220px;
             transition: margin-left 0.3s ease;
-            padding: 20px;
+            padding: 30px 40px;
         }
 
         .content.full {
@@ -73,9 +74,36 @@
             transition: left 0.3s ease;
         }
 
-        /* Saat sidebar disembunyikan, geser tombol toggle */
-        .sidebar.hide ~ #mainContent .toggle-btn {
+        .sidebar.hide ~ .content .toggle-btn {
             left: 15px;
+        }
+
+        .title-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title-section h4 {
+            font-weight: bold;
+            color: #0d6efd;
+        }
+
+        .title-section hr {
+            width: 200px;
+            border-top: 3px solid #0d6efd;
+            margin: 10px auto;
+        }
+
+        .search-form .form-control {
+            border-radius: 10px;
+        }
+
+        .search-form .btn {
+            border-radius: 10px;
+        }
+
+        .table th, .table td {
+            vertical-align: middle !important;
         }
     </style>
 </head>
@@ -88,44 +116,52 @@
 
 <!-- Sidebar -->
 <div id="sidebar" class="sidebar">
-    <h4 class="text-white mb-4">Admin Panel</h4>
+    <h4>Admin Panel</h4>
     <a href="{{ url('/admin/dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
     <a href="{{ url('/admin/jumlah-tamu') }}"><i class="bi bi-bar-chart-line-fill"></i> Jumlah Tamu</a>
     <a href="{{ url('/admin/form-input') }}"><i class="bi bi-ui-checks-grid"></i> Form Input</a>
     <a href="{{ url('/admin/pengguna') }}"><i class="bi bi-people-fill"></i> Pengguna</a>
     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-    <i class="bi bi-box-arrow-right"></i> Logout
-</a>
-<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-    @csrf
-</form>
-
+        <i class="bi bi-box-arrow-right"></i> Logout
+    </a>
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
 </div>
 
 <!-- Main Content -->
 <div id="mainContent" class="content">
-    <div class="container">
-        <h4 class="mb-4">Data Tamu (Admin)</h4>
+    <div class="title-section">
+        <h4><i class="bi bi-clipboard-data-fill me-2"></i>Data Tamu (Admin)</h4>
+        <hr>
+    </div>
 
-        <a href="{{ route('admin.tamu.create') }}" class="btn btn-primary mb-3">Tambah Data Baru</a>
+    <a href="{{ route('admin.tamu.create') }}" 
+       class="btn btn-outline-primary d-inline-flex align-items-center gap-2 mb-4 shadow-sm px-4 py-2 rounded-pill">
+        <i class="bi bi-plus-circle-fill fs-5"></i>
+        <span>Tambah Data Baru</span>
+    </a>
 
-        @if(session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-        <form method="GET" class="row g-3 mb-3">
-            <div class="col-md-5">
-                <input type="text" name="search" class="form-control" placeholder="Cari nama tamu..." value="{{ request('search') }}">
-            </div>
-            <div class="col-md-4">
-                <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}">
-            </div>
-            <div class="col-md-3">
-                <button type="submit" class="btn btn-primary w-100">Cari</button>
-            </div>
-        </form>
+    <!-- Search Form -->
+    <form method="GET" class="row g-3 mb-4 search-form">
+        <div class="col-md-5">
+            <input type="text" name="search" class="form-control" placeholder="Cari nama tamu..." value="{{ request('search') }}">
+        </div>
+        <div class="col-md-4">
+            <input type="date" name="tanggal" class="form-control" value="{{ request('tanggal') }}">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary w-100">Cari</button>
+        </div>
+    </form>
 
-        <table class="table table-bordered">
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
             <thead class="table-light">
                 <tr>
                     <th>No</th>
@@ -157,13 +193,15 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="8" class="text-center">Tidak ada data ditemukan.</td></tr>
+                    <tr>
+                        <td colspan="8" class="text-center">Tidak ada data ditemukan.</td>
+                    </tr>
                 @endforelse
             </tbody>
         </table>
-
-        {{ $tamus->withQueryString()->links() }}
     </div>
+
+    {{ $tamus->withQueryString()->links() }}
 </div>
 
 <script>
@@ -178,12 +216,10 @@
 
         if (sidebar.classList.contains('hide')) {
             toggleBtn.style.left = '15px';
-            toggleIcon.classList.remove('bi-chevron-left');
-            toggleIcon.classList.add('bi-chevron-right');
+            toggleIcon.classList.replace('bi-chevron-left', 'bi-chevron-right');
         } else {
             toggleBtn.style.left = '235px';
-            toggleIcon.classList.remove('bi-chevron-right');
-            toggleIcon.classList.add('bi-chevron-left');
+            toggleIcon.classList.replace('bi-chevron-right', 'bi-chevron-left');
         }
     }
 </script>

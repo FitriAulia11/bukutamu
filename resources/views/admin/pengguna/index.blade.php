@@ -128,17 +128,25 @@
     </form>
 </div>
 
-<!-- Main Content -->
 <div class="main-content">
-    <h4 class="mb-4"><i class="bi bi-people-fill me-2"></i> Daftar Pengguna</h4>
 
+    <!-- Judul Halaman di Tengah -->
+    <div class="text-center mb-4">
+        <h4 class="fw-bold text-success">
+            <i class="bi bi-people-fill me-2"></i> Daftar Pengguna
+        </h4>
+        <hr class="mx-auto" style="width: 200px; border-top: 3px solid #198754;">
+    </div>
+    
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <a href="{{ route('admin.pengguna.create') }}" class="btn btn-success mb-3">
-        <i class="bi bi-plus-circle"></i> Tambah Pengguna
-    </a>
+<a href="{{ route('admin.pengguna.create') }}" 
+   class="btn btn-outline-success d-inline-flex align-items-center gap-2 mb-3 shadow-sm px-4 py-2 rounded-pill">
+    <i class="bi bi-plus-circle-fill fs-5"></i>
+    <span>Tambah Pengguna</span>
+</a>
 
     <div class="card">
         <div class="card-body">

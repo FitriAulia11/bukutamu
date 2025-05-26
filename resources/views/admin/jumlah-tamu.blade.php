@@ -69,7 +69,7 @@
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <h4>Admin Panel</h4>
+       <h4>Admin Panel</h4>
         <a href="{{ url('/admin/dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
         <a href="{{ url('/admin/jumlah-tamu') }}"><i class="bi bi-bar-chart-line-fill"></i> Jumlah Tamu</a>
         <a href="{{ url('/admin/form-input') }}"><i class="bi bi-ui-checks-grid"></i> Form Input</a>
