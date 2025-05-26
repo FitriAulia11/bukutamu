@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\PenggunaController;
+use App\Http\Controllers\Admin\AdminTamuController;
 
 // Halaman awal
 Route::get('/', function () {
@@ -30,33 +32,34 @@ Auth::routes();
 // Jika masih ada route home (bisa dihapus jika sudah tidak dipakai)
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-// Route khusus admin
-Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin', function () {
-        return 'Halaman Admin';
-    });
+//Route Admin
+Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('/admin/jumlah-tamu', [AdminController::class, 'jumlahTamu'])->middleware('auth');
 
-Route::get('/admin/form-tamu', [AdminController::class, 'formTamu'])->name('admin.form.tamu');
-Route::post('/admin/form-tamu', [AdminController::class, 'storeTamu'])->name('admin.form.tamu.store');
 
-    Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-});
 
 // Route khusus user
 Route::middleware(['auth', 'role:user'])->group(function () {
-    // Hapus route dashboard user
-    // Route::get('/dashboard', function () {
-    //     return view('user.dashboard');
-    // });
 
     // Route profile form tamu
     Route::get('/profile', [UserController::class, 'formTamu'])->name('form.tamu');          // tampilkan form
     Route::post('/profile', [UserController::class, 'storeTamu'])->name('form.tamu.store');  // proses simpan data
 
-    // Route tamu lainnya
-    Route::get('/tamu', [UserController::class, 'indexTamu'])->name('tamu.index');
-    Route::get('/form/tamu/create', [UserController::class, 'create'])->name('form.tamu.create');
-    Route::post('/form/tamu/store', [UserController::class, 'store'])->name('form.tamu.store');
-    Route::get('/form/tamu/{id}', [UserController::class, 'show'])->name('user.show');
+Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
+    Route::get('/pengguna/create', [PenggunaController::class, 'create'])->name('admin.pengguna.create');
+    Route::post('/pengguna', [PenggunaController::class, 'store'])->name('admin.pengguna.store');
+    Route::get('/pengguna/{id}/edit', [PenggunaController::class, 'edit'])->name('admin.pengguna.edit');
+    Route::put('/pengguna/{id}', [PenggunaController::class, 'update'])->name('admin.pengguna.update');
+    Route::delete('/pengguna/{id}', [PenggunaController::class, 'destroy'])->name('admin.pengguna.destroy');
+});
 });
 
+Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('/form-input', [AdminTamuController::class, 'index'])->name('admin.tamu.index');
+    Route::get('/form-input/create', [AdminTamuController::class, 'create'])->name('admin.tamu.create');
+    Route::post('/form-input', [AdminTamuController::class, 'store'])->name('admin.tamu.store');
+    Route::get('/form-input/{id}/edit', [AdminTamuController::class, 'edit'])->name('admin.tamu.edit');
+    Route::put('/form-input/{id}', [AdminTamuController::class, 'update'])->name('admin.tamu.update');
+    Route::delete('/form-input/{id}', [AdminTamuController::class, 'destroy'])->name('admin.tamu.destroy');
+});

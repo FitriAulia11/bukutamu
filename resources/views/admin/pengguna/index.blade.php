@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard Admin</title>
+    <title>Daftar Pengguna</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <style>
@@ -19,14 +19,12 @@
             padding-top: 20px;
             position: fixed;
             font-size: 16px;
-            font-weight: 500;
         }
 
         .sidebar h4 {
             font-size: 22px;
             margin-bottom: 30px;
             text-align: center;
-            color: #ffc107;
         }
 
         .sidebar a {
@@ -37,46 +35,17 @@
             transition: 0.3s ease;
         }
 
-        .sidebar a i {
-            margin-right: 10px;
-            color: #ffc107;
-        }
-
         .sidebar a:hover {
-            background-color: #343a40;
+            background-color: #333;
             color: #ffc107;
         }
 
         .main-content {
             margin-left: 220px;
-            padding: 30px;
-            width: calc(100% - 220px);
+            padding: 20px;
+            width: 100%;
             background-color: #f8f9fa;
             min-height: 100vh;
-        }
-
-        .card-box {
-            padding: 30px;
-            color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-
-        .bg-green {
-            background-color: #28a745;
-        }
-
-        .bg-yellow {
-            background-color: #ffc107;
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-        }
-
-        .card-box h5, .card-box h2 {
-            margin: 0;
         }
     </style>
 </head>
@@ -94,23 +63,40 @@
 
     <!-- Main Content -->
     <div class="main-content">
-        <h2 class="mb-4">Dashboard Admin</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card-box bg-green text-center">
-                    <div class="card-icon mb-2"><i class="bi bi-people-fill"></i></div>
-                    <h5>Total Pengguna</h5>
-                    <h2>{{ $totalPengguna }}</h2>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card-box bg-yellow text-center text-dark">
-                    <div class="card-icon mb-2"><i class="bi bi-journal-text"></i></div>
-                    <h5>Total Tamu</h5>
-                    <h2>{{ $totalTamu }}</h2>
-                </div>
-            </div>
-        </div>
+        <h4>Daftar Pengguna</h4>
+        <a href="{{ route('admin.pengguna.create') }}" class="btn btn-success mb-3">Tambah Pengguna</a>
+
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach($users as $user)
+                <tr>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ ucfirst($user->role) }}</td>
+                    <td>
+                        <a href="{{ route('admin.pengguna.edit', $user->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                        <form action="{{ route('admin.pengguna.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Yakin hapus?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
     </div>
 
 </body>
