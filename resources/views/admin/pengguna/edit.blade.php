@@ -10,9 +10,10 @@
             display: flex;
             margin: 0;
             font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
         }
 
-              /* Sidebar */
+        /* Sidebar */
         .sidebar {
             width: 220px;
             height: 100vh;
@@ -49,26 +50,31 @@
             color: #ffc107;
         }
 
-
+        /* Main content */
         .main-content {
             margin-left: 240px;
-            padding: 40px;
-            background-color: #f8f9fa;
-            width: 100%;
-            min-height: 100vh;
+            padding: 40px 20px;
+            width: calc(100% - 240px);
         }
 
         .card {
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            background-color: #fff;
+            padding: 30px;
         }
 
         h4 {
             font-weight: bold;
+            margin-bottom: 30px;
         }
 
         .form-label {
             font-weight: 500;
+        }
+
+        .btn i {
+            margin-right: 6px;
         }
     </style>
 </head>
@@ -81,7 +87,7 @@
     <a href="{{ url('/admin/jumlah-tamu') }}"><i class="bi bi-bar-chart-line-fill"></i> Jumlah Tamu</a>
     <a href="{{ url('/admin/form-input') }}"><i class="bi bi-ui-checks-grid"></i> Form Input</a>
     <a href="{{ url('/admin/pengguna') }}"><i class="bi bi-people-fill"></i> Pengguna</a>
-      <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+    <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <i class="bi bi-box-arrow-right"></i> Logout
     </a>
     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -91,9 +97,9 @@
 
 <!-- Main Content -->
 <div class="main-content">
-    <h4 class="mb-4"><i class="bi bi-pencil-square me-2"></i> Edit Pengguna</h4>
+    <h4><i class="bi bi-pencil-square me-2"></i>Edit Pengguna</h4>
 
-    <div class="card p-4">
+    <div class="card">
         <form action="{{ route('admin.pengguna.update', $user->id) }}" method="POST">
             @csrf
             @method('PUT')
@@ -113,7 +119,7 @@
                 <input type="password" name="password" class="form-control">
             </div>
 
-            <div class="mb-3">
+            <div class="mb-4">
                 <label class="form-label">Role</label>
                 <select name="role" class="form-select" required>
                     <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
@@ -121,7 +127,7 @@
                 </select>
             </div>
 
-            <div class="d-flex justify-content-between mt-4">
+            <div class="d-flex justify-content-between">
                 <a href="{{ route('admin.pengguna.index') }}" class="btn btn-secondary">
                     <i class="bi bi-arrow-left"></i> Kembali
                 </a>
