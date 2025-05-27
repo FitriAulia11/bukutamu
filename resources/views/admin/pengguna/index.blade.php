@@ -109,6 +109,55 @@
         h4 {
             font-weight: bold;
         }
+
+        .modal-content {
+  background: linear-gradient(135deg, #ffffff, #e9f0ff);
+  border-radius: 1rem !important;
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.15);
+}
+
+.modal-header .modal-title i {
+  color: #0d6efd;
+  transition: transform 0.3s ease;
+}
+
+.modal-header .modal-title:hover i {
+  transform: rotate(20deg);
+}
+
+.form-control, .form-select {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 8px rgba(13, 110, 253, 0.3);
+  outline: none;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #0d6efd, #0048d6);
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(45deg, #0048d6, #0d6efd);
+  box-shadow: 0 4px 15px rgba(0, 72, 214, 0.6);
+}
+
+.btn-outline-danger {
+  border-color: #dc3545;
+  color: #dc3545;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-outline-danger:hover {
+  background-color: #dc3545;
+  color: white;
+  box-shadow: 0 4px 15px rgba(220, 53, 69, 0.6);
+}
+
     </style>
 </head>
 <body>
@@ -168,48 +217,58 @@
             <span>Tambah Pengguna</span>
         </button>
 
-        <!-- Modal Tambah Pengguna -->
-        <div class="modal fade" id="modalTambahPengguna" tabindex="-1" aria-labelledby="modalTambahPenggunaLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="{{ route('admin.pengguna.store') }}" method="POST">
-                        @csrf
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalTambahPenggunaLabel">
-                                <i class="bi bi-person-plus-fill me-2"></i> Tambah Pengguna
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Nama Lengkap</label>
-                                <input type="text" class="form-control" id="name" name="name" required />
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Alamat Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required />
-                            </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Kata Sandi</label>
-                                <input type="password" class="form-control" id="password" name="password" required />
-                            </div>
-                            <div class="mb-3">
-                                <label for="role" class="form-label">Peran</label>
-                                <select class="form-select" id="role" name="role" required>
-                                    <option value="" disabled selected>Pilih peran</option>
-                                    <option value="admin">Admin</option>
-                                    <option value="user">User</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-success">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<!-- Modal Tambah Pengguna -->
+<div class="modal fade" id="modalTambahPengguna" tabindex="-1" aria-labelledby="modalTambahPenggunaLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-md"> <!-- Ukuran medium, center vertikal -->
+    <div class="modal-content rounded-5 shadow-lg border-0">
+      <form action="{{ route('admin.pengguna.store') }}" method="POST" novalidate>
+        @csrf
+        <div class="modal-header border-0 pb-2">
+          <h5 class="modal-title d-flex align-items-center fw-bold text-primary" id="modalTambahPenggunaLabel" style="font-size: 1.75rem;">
+            <i class="bi bi-person-plus-fill me-3 fs-2" style="color: #0d6efd;"></i>
+            Tambah Pengguna
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
         </div>
+
+        <div class="modal-body pt-0 px-5">
+          <div class="mb-4">
+            <label for="name" class="form-label fw-semibold text-secondary">Nama Lengkap</label>
+            <input type="text" class="form-control form-control-lg shadow-sm border border-1 border-primary rounded-4" id="name" name="name" placeholder="Masukkan nama lengkap" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="email" class="form-label fw-semibold text-secondary">Alamat Email</label>
+            <input type="email" class="form-control form-control-lg shadow-sm border border-1 border-primary rounded-4" id="email" name="email" placeholder="contoh@mail.com" required />
+          </div>
+
+          <div class="mb-4">
+            <label for="password" class="form-label fw-semibold text-secondary">Kata Sandi</label>
+            <input type="password" class="form-control form-control-lg shadow-sm border border-1 border-primary rounded-4" id="password" name="password" placeholder="Minimal 8 karakter" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="role" class="form-label fw-semibold text-secondary">Peran</label>
+            <select class="form-select form-select-lg shadow-sm border border-1 border-primary rounded-4" id="role" name="role" required>
+              <option value="" disabled selected>Pilih peran</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer border-0 pt-3 justify-content-center gap-4">
+          <button type="button" class="btn btn-outline-danger px-5 py-2 fw-semibold rounded-pill shadow-sm" data-bs-dismiss="modal" style="transition: all 0.3s ease;">
+            <i class="bi bi-x-circle me-2 fs-5"></i> Batal
+          </button>
+          <button type="submit" class="btn btn-primary px-5 py-2 fw-semibold rounded-pill shadow-sm" style="transition: all 0.3s ease;">
+            <i class="bi bi-check-circle me-2 fs-5"></i> Simpan
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
         <!-- Tabel Daftar Pengguna -->
         <div class="card">

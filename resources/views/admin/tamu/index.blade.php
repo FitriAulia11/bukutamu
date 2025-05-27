@@ -183,10 +183,14 @@
         <div class="modal-content">
           <form action="{{ route('admin.tamu.store') }}" method="POST">
             @csrf
-            <div class="modal-header">
-              <h5 class="modal-title" id="modalTambahTamuLabel">Tambah Data Tamu</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-            </div>
+         <div class="modal-header border-0 justify-content-center position-relative bg-primary text-white py-3 rounded-top shadow-sm">
+  <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="modalTambahTamuLabel">
+    <i class="bi bi-person-plus-fill fs-4"></i> <!-- Icon Bootstrap person plus -->
+    Tambah Data Tamu
+  </h5>
+  <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Tutup"></button>
+</div>
+
             <div class="modal-body row g-3">
               <div class="col-md-6">
                 <label for="nama" class="form-label">Nama</label>
@@ -221,10 +225,15 @@
                 <input type="datetime-local" name="tanggal_datang" class="form-control" required>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-              <button type="submit" class="btn btn-primary">Simpan</button>
-            </div>
+           <div class="modal-footer d-flex justify-content-center gap-3">
+  <button type="button" class="btn btn-secondary px-4 py-2 rounded-pill" data-bs-dismiss="modal">
+    <i class="bi bi-x-circle me-2"></i> Batal
+  </button>
+  <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill">
+    <i class="bi bi-check-circle me-2"></i> Simpan
+  </button>
+</div>
+
           </form>
         </div>
       </div>
