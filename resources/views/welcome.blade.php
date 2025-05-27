@@ -177,8 +177,8 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <div class="navbar-nav">
-                <a class="nav-link" href="{{ route('login') }}">Login</a>
-                <a class="nav-link" href="{{ route('register') }}">Register</a>
+                <a class="nav-link" href="{{ route('login') }}">Masuk</a>
+                <a class="nav-link" href="{{ route('register') }}">Daftar</a>
             </div>
         </div>
     </div>

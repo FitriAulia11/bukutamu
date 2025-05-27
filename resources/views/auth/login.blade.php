@@ -148,7 +148,7 @@
         <div class="login-box">
             <img src="{{ asset('img/logo.png') }}" alt="Logo Wikrama" class="logo">
 
-            <h4>{{ __('Login ke Akun Anda') }}</h4>
+            <h4>{{ __('Masuk ke Akun Anda') }}</h4>
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
