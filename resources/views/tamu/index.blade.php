@@ -74,7 +74,7 @@
 <table class="table table-hover table-striped table-borderless shadow-sm align-middle rounded">
 <thead class="bg-primary text-white text-center">
                 <tr>
-                    <th>#</th>
+                    <th>No</th>
                     <th>Nama</th>
                     <th>No. Telepon</th>
                     <th>Alamat</th>
