@@ -105,6 +105,29 @@
         .table th, .table td {
             vertical-align: middle !important;
         }
+
+        #toast-success {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            min-width: 300px;
+            max-width: 500px;
+            border-radius: 12px;
+            animation: fadeSlide 0.5s ease forwards;
+        }
+
+        @keyframes fadeSlide {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -20px);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, 0);
+            }
+        }
     </style>
 </head>
 <body>
@@ -136,15 +159,76 @@
         <hr>
     </div>
 
-    <a href="{{ route('admin.tamu.create') }}" 
-       class="btn btn-outline-primary d-inline-flex align-items-center gap-2 mb-4 shadow-sm px-4 py-2 rounded-pill">
+    <!-- Notifikasi -->
+    @if(session('success'))
+    <div id="toast-success" class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 shadow" role="alert">
+        <i class="bi bi-check-circle-fill fs-4 text-success"></i>
+        <div>
+            <strong>Berhasil!</strong> {{ session('success') }}
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
+    </div>
+    @endif
+
+    <!-- Tombol trigger modal -->
+    <button class="btn btn-outline-primary d-inline-flex align-items-center gap-2 mb-4 shadow-sm px-4 py-2 rounded-pill" 
+            data-bs-toggle="modal" data-bs-target="#modalTambahTamu">
         <i class="bi bi-plus-circle-fill fs-5"></i>
         <span>Tambah Data Baru</span>
-    </a>
+    </button>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <!-- Modal Tambah Tamu -->
+    <div class="modal fade" id="modalTambahTamu" tabindex="-1" aria-labelledby="modalTambahTamuLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <form action="{{ route('admin.tamu.store') }}" method="POST">
+            @csrf
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalTambahTamuLabel">Tambah Data Tamu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+            </div>
+            <div class="modal-body row g-3">
+              <div class="col-md-6">
+                <label for="nama" class="form-label">Nama</label>
+                <input type="text" name="nama" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label for="telepon" class="form-label">Telepon</label>
+                <input type="text" name="telepon" class="form-control" required>
+              </div>
+              <div class="col-md-12">
+                <label for="alamat" class="form-label">Alamat</label>
+                <textarea name="alamat" class="form-control" rows="2" required></textarea>
+              </div>
+              <div class="col-md-6">
+                <label for="keperluan" class="form-label">Keperluan</label>
+                <input type="text" name="keperluan" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label for="kategori" class="form-label">Kategori</label>
+                <select name="kategori" id="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
+                    <option value="" disabled {{ old('kategori') ? '' : 'selected' }}>-- Pilih Kategori --</option>
+                    @foreach(['Wali Santri','Tamu Hotel','Orangtua Siswa','Kunjungan Dinas','Calon Siswa','Tokoh Masyarakat','Kunjungan Sekolah'] as $kategori)
+                        <option value="{{ $kategori }}" {{ old('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}</option>
+                    @endforeach
+                </select>
+                @error('kategori')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+              <div class="col-md-6">
+                <label for="tanggal_datang" class="form-label">Tanggal Datang</label>
+                <input type="datetime-local" name="tanggal_datang" class="form-control" required>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+              <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <!-- Search Form -->
     <form method="GET" class="row g-3 mb-4 search-form">
@@ -201,9 +285,13 @@
         </table>
     </div>
 
-    {{ $tamus->withQueryString()->links() }}
+    <div class="d-flex justify-content-center mt-4">
+        {{ $tamus->withQueryString()->links('pagination::bootstrap-5') }}
+    </div>
 </div>
 
+<!-- Script -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -222,6 +310,15 @@
             toggleIcon.classList.replace('bi-chevron-right', 'bi-chevron-left');
         }
     }
+
+    // Auto-dismiss toast success
+    setTimeout(() => {
+        const toast = document.getElementById('toast-success');
+        if (toast) {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }
+    }, 3000);
 </script>
 
 </body>
