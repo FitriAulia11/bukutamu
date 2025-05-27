@@ -8,7 +8,8 @@
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+    <!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             overflow-x: hidden;
@@ -160,15 +161,21 @@
     </div>
 
     <!-- Notifikasi -->
-    @if(session('success'))
-    <div id="toast-success" class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 shadow" role="alert">
-        <i class="bi bi-check-circle-fill fs-4 text-success"></i>
-        <div>
-            <strong>Berhasil!</strong> {{ session('success') }}
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Tutup"></button>
-    </div>
-    @endif
+@if(session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+            timer: 2000,
+            showConfirmButton: false,
+            position: 'center'
+        });
+    });
+</script>
+@endif
 
     <!-- Tombol trigger modal -->
     <button class="btn btn-outline-primary d-inline-flex align-items-center gap-2 mb-4 shadow-sm px-4 py-2 rounded-pill" 

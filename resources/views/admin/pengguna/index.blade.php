@@ -9,6 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
+    <!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         body {
             display: flex;
@@ -194,17 +196,23 @@
             <hr class="mx-auto" style="width: 200px; border-top: 3px solid #198754;" />
         </div>
 
-        @if(session('success'))
-            <div
-                class="alert alert-success alert-dismissible fade show shadow-sm rounded-pill px-4 py-2 d-inline-flex align-items-center"
-                role="alert"
-                id="successAlert"
-            >
-                <i class="bi bi-check-circle-fill me-2"></i>
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+@if(session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: '{{ session('success') }}',
+            confirmButtonColor: '#3085d6',
+            timer: 2000,
+            showConfirmButton: false,
+            position: 'center'
+        });
+    });
+</script>
+@endif
+
+
 
         <!-- Tombol Tambah Pengguna -->
         <button
@@ -337,6 +345,11 @@
                 bsAlert.close();
             }
         }, 4000);
+
+
+       
     </script>
+ 
+
 </body>
 </html>
