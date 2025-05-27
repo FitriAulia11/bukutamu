@@ -28,7 +28,7 @@
             top: 0;
             width: 100%;
             z-index: 20;
-            background: rgba(0, 123, 255, 0.85);
+            background: rgba(18, 19, 20, 0.85);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
@@ -46,7 +46,7 @@
         .image-slider-container {
             position: relative;
             width: 100vw;
-            height: 75vh;
+            height: 100vh;
             overflow: hidden;
             background: #000;
             padding-top: 56px;
@@ -165,24 +165,6 @@
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container d-flex align-items-center">
-        <a class="navbar-brand d-flex align-items-center fw-bold" href="#">
-            <img src="{{ asset('img/logo.png') }}" alt="Logo Wikrama" style="width: 40px; height: auto; margin-right: 10px;">
-            BukuTamu
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <div class="navbar-nav">
-                <a class="nav-link" href="{{ route('login') }}">Masuk</a>
-                <a class="nav-link" href="{{ route('register') }}">Daftar</a>
-            </div>
-        </div>
-    </div>
-</nav>
 
 <main>
     <div class="image-slider-container" id="imageSlider">
@@ -190,30 +172,99 @@
         <img src="{{ asset('img/foto.jpg') }}" alt="Wikrama 2" />
         <img src="{{ asset('img/wikrama3.jpg') }}" alt="Wikrama 3" />
         <div class="overlay"></div>
-        <div class="welcome-text">
+        <div class="welcome-text text-center">
             Selamat Datang di Buku Tamu Digital SMK Wikrama 1 Garut
+            <br><br>
+            <button class="btn btn-warning mt-3 fw-bold float-animate" id="btnMasuk">
+                Masuk
+            </button>
         </div>
     </div>
 
-    <!-- About Section tanpa card, teks kiri & gambar kanan, animasi -->
+    <!-- Modal Konfirmasi -->
+    <div class="modal fade" id="popupKonfirmasi" tabindex="-1" aria-labelledby="popupKonfirmasiLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-light">
+          <div class="modal-header">
+            <h5 class="modal-title" id="popupKonfirmasiLabel">Konfirmasi</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+          </div>
+          <div class="modal-body text-center">
+            <p>Apakah Anda sudah pernah datang ke sekolah ini sebelumnya?</p>
+            <div class="d-flex justify-content-center gap-3">
+              <button class="btn btn-success" id="btnIya" data-bs-dismiss="modal">Iya</button>
+              <button class="btn btn-danger" id="btnTidak">Tidak</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{{-- Modal Tambah Data --}}
+<div class="modal fade" id="modalTambahTamu" tabindex="-1" aria-labelledby="modalTambahTamuLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form action="{{ route('form.tamu.store') }}" method="POST" class="modal-content shadow border-0">
+        @csrf
+        <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="modalTambahTamuLabel"><i class="bi bi-person-plus-fill me-2"></i>Tambah Tamu Baru</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label for="nama" class="form-label">Nama</label>
+                <input type="text" name="nama" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label for="telepon" class="form-label">No. Telepon</label>
+                <input type="tel" name="telepon" class="form-control" pattern="[0-9]*" input-mode="numeric" required>
+            </div>
+            <div class="col-md-12">
+                <label for="alamat" class="form-label">Alamat</label>
+                <input type="text" name="alamat" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label for="keperluan" class="form-label">Keperluan</label>
+                <input type="text" name="keperluan" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label for="kategori" class="form-label">Kategori</label>
+                <select name="kategori" id="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
+                    <option value="" disabled {{ old('kategori') ? '' : 'selected' }}>-- Pilih Kategori --</option>
+                    @foreach(['Wali Santri','Tamu Hotel','Orangtua Siswa','Kunjungan Dinas','Calon Siswa','Tokoh Masyarakat','Kunjungan Sekolah'] as $kategori)
+                        <option value="{{ $kategori }}" {{ old('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}</option>
+                    @endforeach
+                </select>
+                @error('kategori')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col-md-6">
+                <label for="tanggal_datang" class="form-label">Tanggal & Jam Datang</label>
+                <input type="datetime-local" name="tanggal" class="form-control" required>
+            </div>
+        </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-success"><i class="bi bi-save me-1"></i> Simpan</button>
+        </div>
+    </form>
+  </div>
+</div>
+
+    <!-- About Section -->
     <div class="content" id="about">
       <div class="container py-5">
         <div class="row align-items-center justify-content-center gx-5">
-          <!-- Teks kiri -->
           <div class="col-lg-6 about-text">
             <h3 class="text-primary fw-bold mb-4">Tentang Buku Tamu Digital</h3>
             <p class="text-secondary" style="line-height: 1.7; font-size: 1.1rem;">
-              Buku Tamu Digital ini merupakan sistem yang digunakan oleh SMK Wikrama 1 Garut untuk mendata kunjungan tamu secara efisien dan modern. Melalui sistem ini, setiap tamu yang datang dapat mengisi data diri, keperluan, serta waktu kunjungan dengan cepat dan mudah.
+              Buku Tamu Digital ini merupakan sistem yang digunakan oleh SMK Wikrama 1 Garut untuk mendata kunjungan tamu secara efisien dan modern.
             </p>
             <p class="text-secondary" style="line-height: 1.7; font-size: 1.1rem;">
-              Data yang dikumpulkan digunakan untuk keperluan dokumentasi, keamanan, dan peningkatan layanan sekolah terhadap pengunjung. Sistem ini membantu sekolah dalam mencatat semua aktivitas kunjungan dengan lebih rapi dan terstruktur.
+              Data yang dikumpulkan digunakan untuk dokumentasi, keamanan, dan peningkatan layanan terhadap pengunjung.
             </p>
-            <p class="fw-semibold text-dark mt-3" style="font-size: 1.1rem;">
-              <span class="text-primary">Silakan login</span> untuk mengisi data kunjungan Anda sebagai tamu.
-            </p>
-<a href="{{ route('login') }}" class="btn btn-primary mt-3 px-4 float-animate">Login Sekarang</a>
           </div>
-          <!-- Gambar kanan -->
           <div class="col-lg-5 about-image">
             <img src="{{ asset('img/wikrama1.jpg') }}" alt="Buku Tamu Digital" class="img-fluid rounded-4 shadow-lg" style="min-height: 300px; object-fit: cover; width: 100%;">
           </div>
@@ -221,7 +272,6 @@
       </div>
     </div>
 </main>
-
 <footer>
     <h5>Kontak Sekolah</h5>
     <p>Alamat: Jalan Otto Iskandardinata kampung Tanjung, RT.003/RW.013, Pasawahan, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151</p>
@@ -233,6 +283,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    // Slider berganti otomatis
     const slider = document.getElementById('imageSlider');
     const slides = slider.querySelectorAll('img');
     let currentIndex = 0;
@@ -245,7 +296,7 @@
 
     setInterval(showNextSlide, 5000);
 
-    // Animasi fade + slide on scroll untuk About Section
+    // Scroll animation untuk About Section
     function animateAboutSection() {
         const aboutText = document.querySelector('.about-text');
         const aboutImage = document.querySelector('.about-image');
@@ -263,6 +314,28 @@
 
     window.addEventListener('scroll', animateAboutSection);
     window.addEventListener('load', animateAboutSection);
+
+    // Pop-up logika
+    document.getElementById('btnMasuk').addEventListener('click', () => {
+        const popup = new bootstrap.Modal(document.getElementById('popupKonfirmasi'));
+        popup.show();
+    });
+
+  document.getElementById('btnTidak').addEventListener('click', () => {
+    const popup = bootstrap.Modal.getInstance(document.getElementById('popupKonfirmasi'));
+    popup.hide();
+
+    // Tampilkan modal tambah tamu setelah popup konfirmasi ditutup
+    setTimeout(() => {
+        const modalTambah = new bootstrap.Modal(document.getElementById('modalTambahTamu'));
+        modalTambah.show();
+    }, 400); // beri jeda sedikit agar modal sebelumnya sempat hilang
+});
+
+
+    document.getElementById('btnIya').addEventListener('click', () => {
+        alert("Silakan login dari menu 'Masuk' di atas.");
+    });
 </script>
 
 </body>
