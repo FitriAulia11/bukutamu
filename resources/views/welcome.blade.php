@@ -254,32 +254,37 @@
   </div>
 </div>
 
+<!-- Tombol buka modal -->
+<button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#modalUserLama">
+    Saya sudah pernah datang
+</button>
+
 <!-- Modal User Lama -->
 <div class="modal fade" id="modalUserLama" tabindex="-1" aria-labelledby="modalUserLamaLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalUserLamaLabel">Daftar Tamu Sudah Pernah Datang</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title">Daftar Tamu Sudah Pernah Datang</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
       </div>
       <div class="modal-body">
-        <form id="formUserLama">
+        <form id="formUserLama" method="POST" action="{{ route('tamu.lama') }}">
+          @csrf
           <div class="mb-3">
             <label for="pilihUser" class="form-label">Pilih Nama Anda</label>
-            <select class="form-select" id="pilihUser" required>
+            <select class="form-select" id="pilihUser" name="tamu_id" required>
               <option value="">-- Pilih User --</option>
-              <option value="user1">User 1</option>
-              <option value="user2">User 2</option>
-              <option value="user3">User 3</option>
+              @foreach ($daftarTamu as $tamu)
+                  <option value="{{ $tamu->id }}">{{ $tamu->nama }}</option>
+              @endforeach
             </select>
           </div>
-          <button type="submit" class="btn btn-primary">Daftar</button>
+          <button type="submit" class="btn btn-primary">Lanjut</button>
         </form>
       </div>
     </div>
   </div>
 </div>
-
 
     <!-- About Section -->
     <div class="content" id="about">

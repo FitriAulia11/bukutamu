@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Admin\PenggunaController;
 use App\Http\Controllers\Admin\AdminTamuController;
+use App\Http\Controllers\TamuController;
 
 // Halaman awal
 Route::get('/', function () {
@@ -42,9 +43,11 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     Route::get('/dashboard', [User::class, 'dashboard']);
 Route::get('/admin/users/{id}', [UserController::class, 'show'])->name('user.show');
     // Route profile form tamu
+    Route::get('/tamu.index', [UserController::class, 'indexTamu'])->name('tamu.index');
     Route::get('/profile', [UserController::class, 'formTamu'])->name('form.tamu');          // tampilkan form
     Route::post('/profile', [UserController::class, 'storeTamu'])->name('form.tamu.store');  // proses simpan data
 
+    Route::get('/tamu', [UserController::class, 'indexTamu'])->name('tamu.index');
 Route::get('/tamu/create', [UserController::class, 'createTamu'])->name('tamu.create');
 Route::post('/tamu', [UserController::class, 'storeTamu'])->name('tamu.store');
 Route::get('/tamu/{tamu}', [UserController::class, 'showTamu'])->name('tamu.show');
@@ -63,8 +66,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/form-input/{id}', [AdminTamuController::class, 'update'])->name('admin.tamu.update');
     Route::delete('/form-input/{id}', [AdminTamuController::class, 'destroy'])->name('admin.tamu.destroy');
 });
-
-Route::get('/tamu', [UserController::class, 'indexTamu'])->name('tamu.index');
+Route::post('/form-tamu', [UserController::class, 'storeTamuPublik'])->name('form.tamu.store');
 
 
 
@@ -72,3 +74,6 @@ Route::post('/logout', function () {
     Auth::logout();
     return redirect('/'); // redirect ke halaman welcome
 })->name('logout');
+
+Route::get('/', [TamuController::class, 'index']);
+Route::post('/tamu/lama', [TamuController::class, 'tamuLama'])->name('tamu.lama');
