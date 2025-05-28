@@ -63,34 +63,54 @@
         }
 
         .card-box {
-            padding: 30px;
-            border-radius: 10px;
+            padding: 30px 20px;
+            border-radius: 12px;
+            transition: all 0.3s ease-in-out;
             color: #fff;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             margin-bottom: 20px;
         }
 
-        .bg-green {
-            background-color: #28a745;
+        .hover-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
         }
 
-        .bg-yellow {
-            background-color: #ffc107;
+        .gradient-yellow {
+            background: linear-gradient(135deg, #ffc107, #e0a800);
             color: #212529;
         }
 
-        .card-icon {
-            font-size: 2.5rem;
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 28px;
+            border-radius: 50%;
+            margin: 0 auto;
         }
 
-        .card-box h5 {
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
+        @media (max-width: 767px) {
+            .icon-circle {
+                width: 50px;
+                height: 50px;
+                font-size: 24px;
+            }
 
-        .card-box h2 {
-            font-size: 32px;
-            font-weight: bold;
+            .card-box {
+                padding: 25px 15px;
+            }
+
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .sidebar {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -98,12 +118,10 @@
 
 <!-- Sidebar -->
 <div class="sidebar">
- <h4>Admin Panel</h4>
+    <h4>Admin Panel</h4>
     <a href="{{ url('/admin/dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
     <a href="{{ url('/admin/jumlah-tamu') }}"><i class="bi bi-bar-chart-line-fill"></i> Jumlah Tamu</a>
     <a href="{{ url('/admin/form-input') }}"><i class="bi bi-ui-checks-grid"></i> Form Input</a>
-    <a href="{{ url('/admin/pengguna') }}"><i class="bi bi-people-fill"></i> Pengguna</a>
-
     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <i class="bi bi-box-arrow-right"></i> Logout
     </a>
@@ -125,22 +143,8 @@
     </div>
 
     <!-- Statistik Cards -->
-    <div class="row">
-        <!-- Total Pengguna -->
-        <div class="col-md-6 mb-4">
-            <a href="{{ url('/admin/pengguna') }}" class="text-decoration-none">
-                <div class="card-box gradient-green text-center hover-card shadow">
-                    <div class="icon-circle mb-3">
-                        <i class="bi bi-people-fill"></i>
-                    </div>
-                    <h5 class="text-white mb-1">Total Pengguna</h5>
-                    <h2 class="text-white">{{ $totalPengguna }}</h2>
-                </div>
-            </a>
-        </div>
-
-        <!-- Total Tamu -->
-        <div class="col-md-6 mb-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4 mb-4">
             <a href="{{ url('/admin/form-input') }}" class="text-decoration-none">
                 <div class="card-box gradient-yellow text-center hover-card shadow">
                     <div class="icon-circle mb-3">
@@ -154,52 +158,5 @@
     </div>
 </div>
 
-<style>
-.main-content {
-    padding: 2rem;
-}
-
-.card-box {
-    padding: 30px 20px;
-    border-radius: 12px;
-    transition: all 0.3s ease-in-out;
-}
-
-.hover-card:hover {
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-}
-
-.gradient-green {
-    background: linear-gradient(135deg, #28a745, #218838);
-    color: #fff;
-}
-
-.gradient-yellow {
-    background: linear-gradient(135deg, #ffc107, #e0a800);
-    color: #212529;
-}
-
-.icon-circle {
-    width: 60px;
-    height: 60px;
-    line-height: 60px;
-    background-color: rgba(255, 255, 255, 0.2);
-    color: white;
-    font-size: 28px;
-    border-radius: 50%;
-    margin: 0 auto;
-}
-
-@media (max-width: 767px) {
-    .icon-circle {
-        width: 50px;
-        height: 50px;
-        font-size: 24px;
-    }
-
-    .card-box {
-        padding: 25px 15px;
-    }
-}
-</style>
+</body>
+</html>
