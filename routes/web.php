@@ -34,7 +34,6 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 //Route Admin
 Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-Route::get('/admin/jumlah-tamu', [AdminController::class, 'jumlahTamu'])->middleware('auth');
 
 
 

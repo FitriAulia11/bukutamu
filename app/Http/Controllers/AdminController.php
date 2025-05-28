@@ -11,32 +11,35 @@ use Carbon\Carbon;
 class AdminController extends Controller
 {
     public function dashboard()
-    {
-        $totalPengguna = User::count();
-        $totalTamu = Tamu::count();
-
-        return view('admin.dashboard', compact('totalPengguna', 'totalTamu'));
-    }
-
-    public function jumlahTamu()
 {
-    $months = [];
-    $tamuCounts = [];
+    // Hitung total tamu bulan ini berdasarkan tanggal_datang
+    $totalTamu = DB::table('tamus')
+        ->whereMonth('tanggal_datang', Carbon::now()->month)
+        ->whereYear('tanggal_datang', Carbon::now()->year)
+        ->count();
 
-    for ($i = 0; $i < 6; $i++) {
-        $month = Carbon::now()->subMonths($i)->format('Y-m');
-        $label = Carbon::now()->subMonths($i)->translatedFormat('F Y');
-        $count = Tamu::whereYear('created_at', substr($month, 0, 4))
-                     ->whereMonth('created_at', substr($month, 5, 2))
-                     ->count();
+    // Ambil data tamu per bulan sepanjang tahun ini berdasarkan tanggal_datang
+    $monthlyData = DB::table('tamus')
+        ->selectRaw('MONTH(tanggal_datang) as month, COUNT(*) as count')
+        ->whereYear('tanggal_datang', Carbon::now()->year)
+        ->groupBy('month')
+        ->orderBy('month')
+        ->get();
 
-        array_unshift($months, $label); // urutan bulan dari lama ke terbaru
-        array_unshift($tamuCounts, $count);
+    // Format data untuk grafik
+    $labels = [];
+    $data = [];
+
+    for ($i = 1; $i <= 12; $i++) {
+        $labels[] = Carbon::create()->month($i)->locale('id')->translatedFormat('F');
+        $found = $monthlyData->firstWhere('month', $i);
+        $data[] = $found ? $found->count : 0;
     }
 
-    return view('admin.jumlah-tamu', [
-        'months' => $months,
-        'tamuCounts' => $tamuCounts
+    return view('admin.dashboard', [
+        'totalTamu' => $totalTamu,
+        'labels' => json_encode($labels),
+        'data' => json_encode($data),
     ]);
 }
 

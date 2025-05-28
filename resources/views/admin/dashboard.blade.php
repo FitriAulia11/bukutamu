@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <title>Dashboard Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
+
     <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         body {
             margin: 0;
@@ -17,7 +20,6 @@
             background-color: #f8f9fa;
         }
 
-        /* Sidebar */
         .sidebar {
             width: 220px;
             height: 100vh;
@@ -54,7 +56,6 @@
             color: #ffc107;
         }
 
-        /* Main Content */
         .main-content {
             margin-left: 220px;
             padding: 30px;
@@ -92,6 +93,17 @@
             margin: 0 auto;
         }
 
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+        }
+
+        .card {
+            border: none;
+            border-radius: 16px;
+        }
+
         @media (max-width: 767px) {
             .icon-circle {
                 width: 50px;
@@ -120,7 +132,6 @@
 <div class="sidebar">
     <h4>Admin Panel</h4>
     <a href="{{ url('/admin/dashboard') }}"><i class="bi bi-speedometer2"></i> Dashboard</a>
-    <a href="{{ url('/admin/jumlah-tamu') }}"><i class="bi bi-bar-chart-line-fill"></i> Jumlah Tamu</a>
     <a href="{{ url('/admin/form-input') }}"><i class="bi bi-ui-checks-grid"></i> Form Input</a>
     <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
         <i class="bi bi-box-arrow-right"></i> Logout
@@ -133,30 +144,116 @@
 <!-- Main Content -->
 <div class="main-content">
     <!-- Header -->
-    <div class="text-center text-lg-start mb-5">
-        <h2 class="fw-bold text-primary mb-2">
-            <i class="bi bi-speedometer2 me-2"></i> Dashboard Admin
+    <div class="mb-5">
+        <h2 class="fw-bold text-primary d-flex align-items-center gap-2">
+            <i class="bi bi-speedometer2 fs-2"></i> Dashboard Admin
         </h2>
-        <p class="fs-5 text-muted mb-0">
+        <p class="fs-5 text-secondary">
             Selamat datang, <strong class="text-dark">{{ Auth::user()->name }}</strong>! 👋 Semoga harimu menyenangkan.
         </p>
     </div>
 
-    <!-- Statistik Cards -->
-    <div class="row justify-content-center">
-        <div class="col-md-6 col-lg-4 mb-4">
-            <a href="{{ url('/admin/form-input') }}" class="text-decoration-none">
-                <div class="card-box gradient-yellow text-center hover-card shadow">
-                    <div class="icon-circle mb-3">
-                        <i class="bi bi-journal-text"></i>
-                    </div>
-                    <h5 class="text-dark mb-1">Total Tamu</h5>
-                    <h2 class="text-dark">{{ $totalTamu }}</h2>
+    <!-- Total Tamu Bulan Ini -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card gradient-yellow text-center shadow-sm p-4 hover-card">
+                <div class="icon-circle mb-3">
+                    <i class="bi bi-people-fill"></i>
                 </div>
-            </a>
+                <h5 class="fw-bold mb-1">Total Tamu Bulan Ini</h5>
+                <h2 class="fw-bold">{{ $totalTamu }}</h2>
+            </div>
         </div>
+    </div>
+
+<!-- Grafik Jumlah Tamu -->
+<div class="card shadow p-4 mt-4 bg-white rounded-4 hover-card border-0">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="fw-bold text-primary mb-0">
+            <i class="bi bi-bar-chart-line-fill me-2 text-warning"></i> Grafik Jumlah Tamu (Tiap Bulan)
+        </h4>
+    </div>
+    <hr class="mb-4">
+
+    <div class="chart-container" style="height: 420px;">
+        <canvas id="grafikTamu"></canvas>
     </div>
 </div>
 
-</body>
-</html>
+<script>
+    const ctx = document.getElementById('grafikTamu').getContext('2d');
+
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(255, 193, 7, 0.9)');
+    gradient.addColorStop(1, 'rgba(255, 193, 7, 0.3)');
+
+    const grafikTamu = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {!! $labels !!},
+            datasets: [{
+                label: 'Jumlah Tamu',
+                data: {!! $data !!},
+                backgroundColor: gradient,
+                borderColor: '#ffc107',
+                borderWidth: 2,
+                borderRadius: 8,
+                barThickness: 40
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 1000,
+                easing: 'easeOutQuart'
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 5,
+                        color: '#6c757d',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    grid: {
+                        color: '#e9ecef'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#6c757d',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    labels: {
+                        color: '#343a40',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: '#ffc107',
+                    titleColor: '#212529',
+                    bodyColor: '#212529',
+                    padding: 10,
+                    borderWidth: 1,
+                    borderColor: '#e0a800'
+                }
+            }
+        }
+    });
+</script>
