@@ -20,6 +20,14 @@ class Tamu extends Model
     ];
 
     protected $dates = ['tanggal_datang'];
+
+
+
+    public function kunjungans()
+{
+    return $this->hasMany(Kunjungan::class);
+}
+
 }
 
 

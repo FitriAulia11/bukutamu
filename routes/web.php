@@ -77,3 +77,5 @@ Route::post('/logout', function () {
 
 Route::get('/', [TamuController::class, 'index']);
 Route::post('/tamu/lama', [TamuController::class, 'tamuLama'])->name('tamu.lama');
+
+Route::post('/tamu/lama', [TamuController::class, 'simpanKunjunganLama'])->name('tamu.lama');

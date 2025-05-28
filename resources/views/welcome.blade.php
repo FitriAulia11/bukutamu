@@ -285,6 +285,11 @@
     </div>
   </div>
 </div>
+@if (session('success'))
+  <div class="alert alert-success">
+    {{ session('success') }}
+  </div>
+@endif
 
     <!-- About Section -->
     <div class="content" id="about">
