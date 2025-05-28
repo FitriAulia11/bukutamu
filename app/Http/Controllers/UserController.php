@@ -31,7 +31,7 @@ public function storeTamuPublik(Request $request)
 }
 public function tamuPernah()
 {
-    $tamus = Tamu::whereNotNull('nama')->latest()->get(); // Sesuaikan kondisi ini jika ada flag 'pernah'
+    $tamus = Tamu::select('nama')->latest()->get(); // Sesuaikan kondisi ini jika ada flag 'pernah'
     return view('tamu.pernah', compact('tamus'));
 }
 

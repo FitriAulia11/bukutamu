@@ -254,6 +254,33 @@
   </div>
 </div>
 
+<!-- Modal User Lama -->
+<div class="modal fade" id="modalUserLama" tabindex="-1" aria-labelledby="modalUserLamaLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalUserLamaLabel">Daftar Tamu Sudah Pernah Datang</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formUserLama">
+          <div class="mb-3">
+            <label for="pilihUser" class="form-label">Pilih Nama Anda</label>
+            <select class="form-select" id="pilihUser" required>
+              <option value="">-- Pilih User --</option>
+              <option value="user1">User 1</option>
+              <option value="user2">User 2</option>
+              <option value="user3">User 3</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary">Daftar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
     <!-- About Section -->
     <div class="content" id="about">
       <div class="container py-5">
@@ -348,25 +375,23 @@ document.getElementById('btnMasuk').addEventListener('click', () => {
         confirmButtonText: 'Iya',
         cancelButtonText: 'Tidak',
         reverseButtons: true,
-        confirmButtonColor: '#198754', // hijau
-        cancelButtonColor: '#dc3545', // merah
+        confirmButtonColor: '#198754',
+        cancelButtonColor: '#dc3545',
         customClass: {
             popup: 'animate__animated animate__fadeInDown'
         }
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire({
-                icon: 'info',
-                title: 'Sudah Pernah Datang',
-                text: 'Silakan login dari menu "Masuk" di atas.',
-                confirmButtonColor: '#0d6efd'
-            });
+            const modalUserLama = new bootstrap.Modal(document.getElementById('modalUserLama'));
+            modalUserLama.show();
         } else if (result.dismiss === Swal.DismissReason.cancel) {
             const modalTambah = new bootstrap.Modal(document.getElementById('modalTambahTamu'));
             modalTambah.show();
         }
     });
 });
+
+
 
   document.getElementById('btnTidak').addEventListener('click', () => {
     const popup = bootstrap.Modal.getInstance(document.getElementById('popupKonfirmasi'));

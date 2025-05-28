@@ -76,6 +76,11 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 });
 Route::post('/form-tamu', [UserController::class, 'storeTamuPublik'])->name('form.tamu.store');
 
+Route::get('/daftar-tamu', [UserController::class, 'getDaftarTamu'])->name('tamu.daftar');
+Route::get('/cek-tamu/{telepon}', [UserController::class, 'cekTamu']);
+// web.php
+Route::post('/form/tamu/select', [UserController::class, 'selectTamu'])->name('form.tamu.select');
+
 
 
 Route::post('/logout', function () {
