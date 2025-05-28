@@ -46,7 +46,7 @@
         .image-slider-container {
             position: relative;
             width: 100vw;
-            height: 100vh;
+            height: 80vh;
             overflow: hidden;
             background: #000;
             padding-top: 56px;
@@ -241,7 +241,7 @@
             </div>
             <div class="col-md-6">
                 <label for="tanggal_datang" class="form-label">Tanggal & Jam Datang</label>
-                <input type="datetime-local" name="tanggal" class="form-control" required>
+<input type="datetime-local" name="tanggal_datang" class="form-control" required>
             </div>
         </div>
         </div>
@@ -272,6 +272,26 @@
       </div>
     </div>
 </main>
+  {{-- Notifikasi Sukses --}}
+    @if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                position: 'center',
+                toast: false,
+                customClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                }
+            });
+        });
+    </script>
+    @endif
 <footer>
     <h5>Kontak Sekolah</h5>
     <p>Alamat: Jalan Otto Iskandardinata kampung Tanjung, RT.003/RW.013, Pasawahan, Kec. Tarogong Kaler, Kabupaten Garut, Jawa Barat 44151</p>
@@ -281,7 +301,8 @@
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     // Slider berganti otomatis
     const slider = document.getElementById('imageSlider');

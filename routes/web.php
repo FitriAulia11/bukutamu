@@ -74,6 +74,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::put('/form-input/{id}', [AdminTamuController::class, 'update'])->name('admin.tamu.update');
     Route::delete('/form-input/{id}', [AdminTamuController::class, 'destroy'])->name('admin.tamu.destroy');
 });
+Route::post('/form-tamu', [UserController::class, 'storeTamuPublik'])->name('form.tamu.store');
 
 
 
