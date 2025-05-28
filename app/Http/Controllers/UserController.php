@@ -29,4 +29,10 @@ public function storeTamuPublik(Request $request)
 
     return redirect('/')->with('success', 'Terima kasih, data Anda berhasil disimpan!');
 }
+public function tamuPernah()
+{
+    $tamus = Tamu::whereNotNull('nama')->latest()->get(); // Sesuaikan kondisi ini jika ada flag 'pernah'
+    return view('tamu.pernah', compact('tamus'));
+}
+
 }

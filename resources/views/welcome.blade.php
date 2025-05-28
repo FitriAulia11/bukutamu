@@ -7,6 +7,7 @@
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
         html, body {
@@ -46,7 +47,7 @@
         .image-slider-container {
             position: relative;
             width: 100vw;
-            height: 80vh;
+            height: 100vh;
             overflow: hidden;
             background: #000;
             padding-top: 56px;
@@ -175,9 +176,10 @@
         <div class="welcome-text text-center">
             Selamat Datang di Buku Tamu Digital SMK Wikrama 1 Garut
             <br><br>
-            <button class="btn btn-warning mt-3 fw-bold float-animate" id="btnMasuk">
-                Masuk
-            </button>
+           <button class="btn btn-primary mt-3 fw-bold float-animate px-4 py-2 rounded-pill shadow" id="btnMasuk">
+   <i class="bi bi-pencil-square me-2"></i>Isi Data Tamu
+</button>
+
         </div>
     </div>
 
@@ -303,6 +305,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- SweetAlert2 -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
     // Slider berganti otomatis
     const slider = document.getElementById('imageSlider');
@@ -336,11 +339,34 @@
     window.addEventListener('scroll', animateAboutSection);
     window.addEventListener('load', animateAboutSection);
 
-    // Pop-up logika
-    document.getElementById('btnMasuk').addEventListener('click', () => {
-        const popup = new bootstrap.Modal(document.getElementById('popupKonfirmasi'));
-        popup.show();
+document.getElementById('btnMasuk').addEventListener('click', () => {
+    Swal.fire({
+        title: 'Konfirmasi',
+        text: 'Apakah Anda sudah pernah datang ke sekolah ini sebelumnya?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Iya',
+        cancelButtonText: 'Tidak',
+        reverseButtons: true,
+        confirmButtonColor: '#198754', // hijau
+        cancelButtonColor: '#dc3545', // merah
+        customClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Sudah Pernah Datang',
+                text: 'Silakan login dari menu "Masuk" di atas.',
+                confirmButtonColor: '#0d6efd'
+            });
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            const modalTambah = new bootstrap.Modal(document.getElementById('modalTambahTamu'));
+            modalTambah.show();
+        }
     });
+});
 
   document.getElementById('btnTidak').addEventListener('click', () => {
     const popup = bootstrap.Modal.getInstance(document.getElementById('popupKonfirmasi'));
@@ -354,9 +380,19 @@
 });
 
 
-    document.getElementById('btnIya').addEventListener('click', () => {
-        alert("Silakan login dari menu 'Masuk' di atas.");
+ document.getElementById('btnIya').addEventListener('click', () => {
+    Swal.fire({
+        icon: 'info',
+        title: 'Sudah Pernah Datang',
+        text: 'Silakan login dari menu "Masuk" di atas.',
+        showConfirmButton: true,
+        confirmButtonColor: '#0d6efd',
+        customClass: {
+            popup: 'animate__animated animate__fadeInDown'
+        }
     });
+});
+
 </script>
 
 </body>
