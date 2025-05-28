@@ -54,14 +54,6 @@ Route::get('/tamu/{tamu}', [UserController::class, 'showTamu'])->name('tamu.show
 });
 
 
-Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/pengguna', [PenggunaController::class, 'index'])->name('admin.pengguna.index');
-    Route::get('/pengguna/create', [PenggunaController::class, 'create'])->name('admin.pengguna.create');
-    Route::post('/pengguna', [PenggunaController::class, 'store'])->name('admin.pengguna.store');
-    Route::get('/pengguna/{id}/edit', [PenggunaController::class, 'edit'])->name('admin.pengguna.edit');
-    Route::put('/pengguna/{id}', [PenggunaController::class, 'update'])->name('admin.pengguna.update');
-    Route::delete('/pengguna/{id}', [PenggunaController::class, 'destroy'])->name('admin.pengguna.destroy');
-});
 
 
 Route::get('/admin/form-tamu', [AdminController::class, 'formTamu'])->name('form.tamu.create');
