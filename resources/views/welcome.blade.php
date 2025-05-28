@@ -254,11 +254,6 @@
   </div>
 </div>
 
-<!-- Tombol buka modal -->
-<button class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#modalUserLama">
-    Saya sudah pernah datang
-</button>
-
 <!-- Modal User Lama -->
 <div class="modal fade" id="modalUserLama" tabindex="-1" aria-labelledby="modalUserLamaLabel" aria-hidden="true">
   <div class="modal-dialog">
