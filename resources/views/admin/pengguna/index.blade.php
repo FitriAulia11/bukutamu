@@ -258,9 +258,7 @@
           <div class="mb-3">
             <label for="role" class="form-label fw-semibold text-secondary">Peran</label>
             <select class="form-select form-select-lg shadow-sm border border-1 border-primary rounded-4" id="role" name="role" required>
-              <option value="" disabled selected>Pilih peran</option>
               <option value="admin">Admin</option>
-              <option value="user">User</option>
             </select>
           </div>
         </div>

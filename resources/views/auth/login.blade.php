@@ -148,7 +148,7 @@
         <div class="login-box">
             <img src="{{ asset('img/logo.png') }}" alt="Logo Wikrama" class="logo">
 
-            <h4>{{ __('Masuk ke Akun Anda') }}</h4>
+            <h4>{{ __('Masuk ke Akun Admin') }}</h4>
 
             <form method="POST" action="{{ route('login') }}">
                 @csrf
@@ -180,17 +180,6 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">{{ __('Masuk') }}</button>
-
-                @if (Route::has('password.request'))
-                    <div class="text-center mt-3">
-                        <a href="{{ route('password.request') }}">{{ __('Lupa Password?') }}</a>
-                    </div>
-                @endif
-            </form>
-
-            <div class="register-link">
-                <p>Belum punya akun? <a href="{{ route('register') }}">Daftar Sekarang</a></p>
-            </div>
         </div>
     </div>
 </div>
