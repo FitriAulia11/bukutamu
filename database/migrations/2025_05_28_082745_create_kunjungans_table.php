@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kunjungans', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+       Schema::create('kunjungan', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('tamu_id')->constrained('tamu')->onDelete('cascade');
+    $table->timestamp('waktu_kunjungan')->nullable();
+    $table->timestamps();
+});
+
     }
 
     /**

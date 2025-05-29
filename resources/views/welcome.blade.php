@@ -258,13 +258,17 @@
 <div class="modal fade" id="modalUserLama" tabindex="-1" aria-labelledby="modalUserLamaLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+
       <div class="modal-header">
         <h5 class="modal-title">Daftar Tamu Sudah Pernah Datang</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
       </div>
+
       <div class="modal-body">
         <form id="formUserLama" method="POST" action="{{ route('tamu.lama') }}">
           @csrf
+
+          <!-- Pilih Nama -->
           <div class="mb-3">
             <label for="pilihUser" class="form-label">Pilih Nama Anda</label>
             <select class="form-select" id="pilihUser" name="tamu_id" required>
@@ -274,18 +278,32 @@
               @endforeach
             </select>
           </div>
+
+          <!-- Pilih Kategori -->
+          <div class="mb-3">
+            <label for="kategori" class="form-label fw-semibold">Kategori</label>
+            <select name="kategori" id="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
+              <option value="" disabled selected>-- Pilih Kategori --</option>
+              <option value="Wali Santri">Wali Santri</option>
+              <option value="Tamu Hotel">Tamu Hotel</option>
+              <option value="Orangtua Siswa">Orangtua Siswa</option>
+              <option value="Kunjungan Dinas">Kunjungan Dinas</option>
+              <option value="Calon Siswa">Calon Siswa</option>
+              <option value="Tokoh Masyarakat">Tokoh Masyarakat</option>
+              <option value="Kunjungan Sekolah">Kunjungan Sekolah</option>
+            </select>
+            @error('kategori')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
           <button type="submit" class="btn btn-primary">Lanjut</button>
         </form>
       </div>
+
     </div>
   </div>
 </div>
-@if (session('success'))
-  <div class="alert alert-success">
-    {{ session('success') }}
-  </div>
-@endif
-
     <!-- About Section -->
     <div class="content" id="about">
       <div class="container py-5">

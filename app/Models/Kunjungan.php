@@ -9,7 +9,7 @@ class Kunjungan extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['tamu_id', 'waktu_kunjungan'];
+protected $fillable = ['tamu_id', 'waktu_kunjungan'];
 
     public function tamu()
     {

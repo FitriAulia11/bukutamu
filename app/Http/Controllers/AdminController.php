@@ -10,13 +10,29 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
-    public function dashboard()
-    {
-        $totalPengguna = User::count();
-        $totalTamu = Tamu::count();
+   public function dashboard()
+{
+    $totalPengguna = User::count();
+    $totalTamu = Tamu::count();
 
-        return view('admin.dashboard', compact('totalPengguna', 'totalTamu'));
+    // Data untuk grafik tamu per bulan
+    $labels = [];
+    $data = [];
+
+    for ($i = 0; $i < 6; $i++) {
+        $month = Carbon::now()->subMonths($i)->format('Y-m');
+        $label = Carbon::now()->subMonths($i)->translatedFormat('F Y');
+        $count = Tamu::whereYear('created_at', substr($month, 0, 4))
+                     ->whereMonth('created_at', substr($month, 5, 2))
+                     ->count();
+
+        array_unshift($labels, $label);
+        array_unshift($data, $count);
     }
+
+    return view('admin.dashboard', compact('totalPengguna', 'totalTamu', 'labels', 'data'));
+}
+
 
     public function jumlahTamu()
 {

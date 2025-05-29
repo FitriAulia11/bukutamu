@@ -180,6 +180,7 @@
     </div>
 </div>
 
+
 <script>
     const ctx = document.getElementById('grafikTamu').getContext('2d');
 
@@ -190,10 +191,10 @@
     const grafikTamu = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: {!! $labels !!},
+            labels: {!! json_encode($labels) !!},
             datasets: [{
                 label: 'Jumlah Tamu',
-                data: {!! $data !!},
+                data: {!! json_encode($data) !!},
                 backgroundColor: gradient,
                 borderColor: '#ffc107',
                 borderWidth: 2,

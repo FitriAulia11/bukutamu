@@ -42,21 +42,21 @@ public function tamuLama(Request $request)
     return redirect()->back()->with('success', 'Selamat datang kembali, ' . $tamu->nama . '!');
 }
 
-public function simpanKunjunganLama(Request $request)
-{
-    $request->validate([
-        'tamu_id' => 'required|exists:tamus,id',
-    ]);
+    public function simpanKunjunganLama(Request $request)
+    {
+        $request->validate([
+            'tamu_id' => 'required|exists:tamus,id',
+        ]);
 
-    // Simpan data kunjungan baru
-    Kunjungan::create([
-        'tamu_id' => $request->tamu_id,
-        'tanggal_kunjungan' => now(),
-    ]);
+        // Simpan data kunjungan baru
+        Kunjungan::create([
+            'tamu_id' => $request->tamu_id,
+            'tanggal_kunjungan' => now(),
+        ]);
 
-    $tamu = \App\Models\Tamu::find($request->tamu_id);
+        $tamu = \App\Models\Tamu::find($request->tamu_id);
 
-    return redirect()->back()->with('success', 'Selamat datang kembali, ' . $tamu->nama . '!');
-}
+        return redirect()->back()->with('success', 'Selamat datang kembali, ' . $tamu->nama . '!');
+    }
 
 }
