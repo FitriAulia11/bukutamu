@@ -54,9 +54,21 @@ public function tamuLama(Request $request)
             'tanggal_kunjungan' => now(),
         ]);
 
-        $tamu = \App\Models\Tamu::find($request->tamu_id);
+        $tamu = Tamu::find($request->tamu_id);
 
         return redirect()->back()->with('success', 'Selamat datang kembali, ' . $tamu->nama . '!');
     }
+
+    public function daftarTamu()
+    {
+        // Ambil semua kunjungan, urut berdasarkan tamu dan tanggal terakhir kunjungan
+        $tamu = Kunjungan::select('nama_tamu', 'alamat', 'no_telp')
+            ->groupBy('nama_tamu', 'alamat', 'no_telp')
+            ->orderBy('nama_tamu', 'asc')
+            ->get();
+
+        return view('admin.daftar_tamu', compact('tamu'));
+    }
+
 
 }
