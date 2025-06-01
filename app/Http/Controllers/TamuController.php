@@ -34,30 +34,55 @@ public function tamuLama(Request $request)
 {
     $request->validate([
         'tamu_id' => 'required|exists:tamus,id',
+        'nama' => 'required|string|max:255',
+        'keperluan' => 'required|string|max:255',
     ]);
 
-    $tamu = Tamu::find($request->tamu_id);
+    $tamu = Tamu::findOrFail($request->tamu_id);
 
-    // Terserah kamu mau redirect ke mana, contoh:
-    return redirect()->back()->with('success', 'Selamat datang kembali, ' . $tamu->nama . '!');
+    // Update hanya nama dan keperluan
+    $tamu->nama = $request->nama;
+    $tamu->keperluan = $request->keperluan;
+    $tamu->save();
+
+    // Jika ingin catat kunjungan baru
+    Kunjungan::create([
+        'tamu_id' => $tamu->id,
+        'tanggal_kunjungan' => now(),
+    ]);
+
+    return redirect()->back()->with('success', 'Data Anda telah diperbarui, selamat datang kembali, ' . $tamu->nama . '!');
 }
 
-    public function simpanKunjunganLama(Request $request)
-    {
-        $request->validate([
-            'tamu_id' => 'required|exists:tamus,id',
+
+public function simpanKunjunganLama(Request $request)
+{
+    $request->validate([
+        'tamu_id' => 'required|exists:tamus,id',
+    ]);
+
+    // Ambil data tamu lama
+    $tamuLama = Tamu::findOrFail($request->tamu_id);
+
+    // Buat salinan baru data tamu
+    $tamuBaru = Tamu::create([
+        'nama' => $tamuLama->nama,
+        'telepon' => $tamuLama->telepon,
+        'tanggal_datang' => $tamuLama->tanggal_datang,
+        'alamat' => $tamuLama->alamat,
+        'keperluan' => $tamuLama->keperluan,
+        'kategori' => $tamuLama->kategori,
         ]);
 
-        // Simpan data kunjungan baru
-        Kunjungan::create([
-            'tamu_id' => $request->tamu_id,
-            'tanggal_kunjungan' => now(),
-        ]);
+    // Buat kunjungan baru berdasarkan tamu yang barusan disalin
+    Kunjungan::create([
+        'tamu_id' => $tamuBaru->id,
+        'tanggal_kunjungan' => now(),
+    ]);
 
-        $tamu = Tamu::find($request->tamu_id);
+    return redirect()->back()->with('success', 'Selamat datang kembali, ' . $tamuBaru->nama . '!');
+}
 
-        return redirect()->back()->with('success', 'Selamat datang kembali, ' . $tamu->nama . '!');
-    }
 
 public function daftarTamu()
 {
