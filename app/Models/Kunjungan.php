@@ -9,9 +9,12 @@ class Kunjungan extends Model
 {
     use HasFactory;
 
-protected $table = 'kunjungan';
+    protected $table = 'kunjungan';
 
-protected $fillable = ['tamu_id', 'waktu_kunjungan'];
+    protected $fillable = [
+        'tamu_id',
+        'tanggal_kunjungan',
+    ];
 
     public function tamu()
     {
