@@ -13,7 +13,7 @@ return new class extends Migration
     {
        Schema::create('kunjungan', function (Blueprint $table) {
     $table->id();
-    $table->foreignId('tamu_id')->constrained('tamu')->onDelete('cascade');
+    $table->foreignId('tamu_id')->constrained('tamus')->onDelete('cascade');
     $table->timestamp('waktu_kunjungan')->nullable();
     $table->timestamps();
 });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kunjungans');
+        Schema::dropIfExists('kunjungan');
     }
 };
