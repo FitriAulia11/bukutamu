@@ -259,10 +259,12 @@
   <div class="modal-dialog">
     <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title">Daftar Tamu Sudah Pernah Datang</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-      </div>
+   <div class="modal-header bg-primary text-white d-flex justify-content-between align-items-center">
+  <h5 class="modal-title mb-0">
+    <i class="bi bi-person-check-fill me-2"></i> Daftar Tamu Sudah Pernah Datang
+  </h5>
+  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
+</div>
 
       <div class="modal-body">
         <form id="formUserLama" method="POST" action="{{ route('tamu.lama') }}">
