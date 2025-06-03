@@ -271,17 +271,21 @@
     @csrf
 
     <!-- Pilih Nama -->
-    <div class="mb-3">
-      <label for="pilihUser" class="form-label">Pilih Nama Anda</label>
-      <select class="form-select" id="pilihUser" name="tamu_id" required>
-        <option value="">-- Pilih User --</option>
-        @foreach ($daftarTamu as $tamu)
-            <option value="{{ $tamu->id }}">{{ $tamu->nama }}</option>
-        @endforeach
-      </select>
-    </div>
-
-    <!-- Pilih Kategori -->
+ <div class="mb-3">
+            <label for="pilihUser" class="form-label">Pilih Nama Anda</label>
+            <select class="form-select" id="pilihUser" name="tamu_id" required>
+              <option value="">-- Pilih User --</option>
+              @php
+                // Ambil kombinasi unik nama + telepon
+                $namaUnik = $daftarTamu->unique(fn ($tamu) => $tamu->nama . '-' . $tamu->telepon);
+              @endphp
+              @foreach ($namaUnik as $tamu)
+                <option value="{{ $tamu->id }}">{{ $tamu->nama }} ({{ $tamu->telepon }})</option>
+              @endforeach
+            </select>
+          </div>
+          
+          <!-- Pilih Kategori -->
     <div class="mb-3">
       <label for="kategori" class="form-label fw-semibold">Kategori</label>
       <select name="kategori" id="kategori" class="form-select @error('kategori') is-invalid @enderror" required>

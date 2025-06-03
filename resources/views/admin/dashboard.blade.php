@@ -184,54 +184,81 @@
 <script>
     const ctx = document.getElementById('grafikTamu').getContext('2d');
 
+    // Buat gradient untuk batang
     const gradient = ctx.createLinearGradient(0, 0, 0, 400);
     gradient.addColorStop(0, 'rgba(255, 193, 7, 0.9)');
-    gradient.addColorStop(1, 'rgba(255, 193, 7, 0.3)');
+    gradient.addColorStop(1, 'rgba(255, 193, 7, 0.4)');
 
     const grafikTamu = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: {!! json_encode($labels) !!},
+            labels: {!! json_encode($labels) !!}, // Januari s/d bulan sekarang
             datasets: [{
                 label: 'Jumlah Tamu',
-                data: {!! json_encode($data) !!},
+                data: {!! json_encode($data) !!},  // Data sesuai bulan
                 backgroundColor: gradient,
                 borderColor: '#ffc107',
                 borderWidth: 2,
                 borderRadius: 8,
-                barThickness: 40
+                barThickness: 40,
+                maxBarThickness: 50
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             animation: {
-                duration: 1000,
+                duration: 1200,
                 easing: 'easeOutQuart'
             },
             scales: {
                 y: {
                     beginAtZero: true,
                     ticks: {
-                        stepSize: 5,
+                        stepSize: 1,
                         color: '#6c757d',
                         font: {
-                            size: 14
+                            size: 14,
+                            weight: '600'
                         }
                     },
                     grid: {
-                        color: '#e9ecef'
+                        color: '#e9ecef',
+                        borderDash: [5, 5],
+                    },
+                    title: {
+                        display: true,
+                        text: 'Jumlah Tamu',
+                        color: '#495057',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
                     }
                 },
                 x: {
                     ticks: {
-                        color: '#6c757d',
+                        color: '#495057',
                         font: {
-                            size: 14
-                        }
+                            size: 14,
+                            weight: '600'
+                        },
+                        maxRotation: 45,
+                        minRotation: 45,
+                        autoSkip: true,
+                        maxTicksLimit: 12
                     },
                     grid: {
                         display: false
+                    },
+                    title: {
+                        display: true,
+                        text: 'Bulan',
+                        color: '#495057',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
                     }
                 }
             },
@@ -239,20 +266,26 @@
                 legend: {
                     display: true,
                     labels: {
-                        color: '#343a40',
+                        color: '#212529',
                         font: {
-                            size: 14,
+                            size: 16,
                             weight: 'bold'
                         }
                     }
                 },
                 tooltip: {
+                    enabled: true,
                     backgroundColor: '#ffc107',
                     titleColor: '#212529',
                     bodyColor: '#212529',
                     padding: 10,
+                    borderColor: '#e0a800',
                     borderWidth: 1,
-                    borderColor: '#e0a800'
+                    cornerRadius: 6,
+                    displayColors: false,
+                    callbacks: {
+                        label: context => `Jumlah: ${context.parsed.y}`
+                    }
                 }
             }
         }
