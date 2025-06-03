@@ -456,6 +456,21 @@ document.getElementById('btnMasuk').addEventListener('click', () => {
     });
 });
 
+ // Set datetime-local otomatis saat modal dibuka
+    const modalTambahTamu = document.getElementById('modalTambahTamu');
+    modalTambahTamu.addEventListener('show.bs.modal', function () {
+        const inputTanggal = modalTambahTamu.querySelector('input[name="tanggal_datang"]');
+
+        // Buat waktu sekarang dalam format datetime-local
+        const now = new Date();
+        const offset = now.getTimezoneOffset();
+        const localDate = new Date(now.getTime() - offset * 60 * 1000);
+        const formatted = localDate.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:MM"
+        
+        inputTanggal.value = formatted;
+    });
+    
+
 </script>
 
 </body>

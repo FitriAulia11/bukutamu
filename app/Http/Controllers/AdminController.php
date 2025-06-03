@@ -10,40 +10,45 @@ use Carbon\Carbon;
 
 class AdminController extends Controller
 {
-    public function dashboard()
-    {
-        $totalPengguna = User::count();
-        $totalTamu = Tamu::count();
+  public function dashboard()
+{
+    $totalPengguna = User::count();
+    $totalTamu = Tamu::count();
 
-        // Tahun sekarang
-        $year = Carbon::now()->year;
-        $nowMonth = Carbon::now()->month;
+    // Tambahkan ini untuk menghitung tamu hari ini
+    $totalTamuHariIni = Tamu::whereDate('tanggal_datang', Carbon::today())->count();
 
-        // Generate array bulan dari Januari sampai bulan sekarang
-        $labels = [];
-        for ($m = 1; $m <= $nowMonth; $m++) {
-            // Format nama bulan dan tahun, misal "Januari 2025"
-            $labels[] = Carbon::create($year, $m, 1)->translatedFormat('F Y');
-        }
+    $year = Carbon::now()->year;
+    $nowMonth = Carbon::now()->month;
 
-        // Ambil data tamu per bulan dari database untuk tahun ini
-        $tamuPerBulan = DB::table('tamus')
-            ->select(
-                DB::raw("MONTH(tanggal_datang) as bulan"),
-                DB::raw("COUNT(*) as total")
-            )
-            ->whereYear('tanggal_datang', $year)
-            ->groupBy('bulan')
-            ->orderBy('bulan')
-            ->get()
-            ->keyBy('bulan');  // Key by bulan untuk mudah lookup
-
-        // Gabungkan data tamu dengan semua bulan (isi 0 jika tidak ada data)
-        $data = [];
-        for ($m = 1; $m <= $nowMonth; $m++) {
-            $data[] = isset($tamuPerBulan[$m]) ? $tamuPerBulan[$m]->total : 0;
-        }
-
-        return view('admin.dashboard', compact('totalPengguna', 'totalTamu', 'labels', 'data'));
+    // Generate array bulan dari Januari sampai bulan sekarang
+    $labels = [];
+    for ($m = 1; $m <= $nowMonth; $m++) {
+        $labels[] = Carbon::create($year, $m, 1)->translatedFormat('F Y');
     }
+
+    $tamuPerBulan = DB::table('tamus')
+        ->select(
+            DB::raw("MONTH(tanggal_datang) as bulan"),
+            DB::raw("COUNT(*) as total")
+        )
+        ->whereYear('tanggal_datang', $year)
+        ->groupBy('bulan')
+        ->orderBy('bulan')
+        ->get()
+        ->keyBy('bulan');
+
+    $data = [];
+    for ($m = 1; $m <= $nowMonth; $m++) {
+        $data[] = isset($tamuPerBulan[$m]) ? $tamuPerBulan[$m]->total : 0;
+    }
+
+    return view('admin.dashboard', compact(
+        'totalPengguna',
+        'totalTamu',
+        'totalTamuHariIni',
+        'labels',
+        'data'
+    ));
+}
 }

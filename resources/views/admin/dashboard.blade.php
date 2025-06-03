@@ -153,18 +153,27 @@
         </p>
     </div>
 
-    <!-- Total Tamu Bulan Ini -->
-    <div class="row mb-4">
-        <div class="col-md-4">
-            <div class="card gradient-yellow text-center shadow-sm p-4 hover-card">
-                <div class="icon-circle mb-3">
-                    <i class="bi bi-people-fill"></i>
-                </div>
-                <h5 class="fw-bold mb-1">Total Tamu Bulan Ini</h5>
-                <h2 class="fw-bold">{{ $totalTamu }}</h2>
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card gradient-yellow text-center shadow-sm p-4 hover-card">
+            <div class="icon-circle mb-3">
+                <i class="bi bi-calendar-event-fill"></i>
             </div>
+            <h5 class="fw-bold mb-1">Total Tamu Bulan Ini</h5>
+            <h2 class="fw-bold">{{ $totalTamu }}</h2>
         </div>
     </div>
+
+    <div class="col-md-6">
+        <div class="card gradient-yellow text-center shadow-sm p-4 hover-card">
+            <div class="icon-circle mb-3">
+                <i class="bi bi-calendar-day-fill"></i>
+            </div>
+            <h5 class="fw-bold mb-1">Total Tamu Hari Ini</h5>
+            <h2 class="fw-bold">{{ $totalTamuHariIni }}</h2>
+        </div>
+    </div>
+</div>
 
 <!-- Grafik Jumlah Tamu -->
 <div class="card shadow p-4 mt-4 bg-white rounded-4 hover-card border-0">
