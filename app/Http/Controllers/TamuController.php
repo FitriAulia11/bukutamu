@@ -94,4 +94,49 @@ public function daftarTamu()
     return view('daftar-tamu', compact('kunjungan'));
 }
 
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'nama' => 'required|string',
+        'telepon' => 'required|string',
+        'alamat' => 'required|string',
+        'keperluan' => 'required|string',
+        'kategori' => 'required|string',
+        'tanggal_datang' => 'required|date',
+        'foto_base64' => 'nullable|string',
+    ]);
+
+    $fotoPath = null;
+
+    // Jika ada base64 dari kamera
+    if (!empty($request->foto_base64)) {
+        $fotoData = $request->foto_base64;
+
+        // Hapus prefix base64
+        $fotoData = preg_replace('#^data:image/\w+;base64,#i', '', $fotoData);
+        $fotoData = str_replace(' ', '+', $fotoData);
+        $fotoDecoded = base64_decode($fotoData);
+
+        // Nama file unik
+        $fileName = 'tamu_' . uniqid() . '.png';
+
+        // Simpan ke storage/app/public/foto_tamu/
+        \Storage::disk('public')->put("foto_tamu/{$fileName}", $fotoDecoded);
+
+        $fotoPath = "foto_tamu/{$fileName}";
+    }
+
+    // Simpan ke DB
+    \App\Models\Tamu::create([
+        'nama' => $validated['nama'],
+        'telepon' => $validated['telepon'],
+        'alamat' => $validated['alamat'],
+        'keperluan' => $validated['keperluan'],
+        'kategori' => $validated['kategori'],
+        'tanggal_datang' => $validated['tanggal_datang'],
+        'foto' => $fotoPath,
+    ]);
+
+    return redirect()->back()->with('success', 'Data tamu berhasil disimpan!');
+}
 }

@@ -17,6 +17,7 @@ class Tamu extends Model
         'alamat',
         'keperluan',
         'kategori',
+         'foto',
     ];
 
     protected $dates = ['tanggal_datang'];

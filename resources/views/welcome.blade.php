@@ -245,7 +245,24 @@
                 <label for="tanggal_datang" class="form-label">Tanggal & Jam Datang</label>
 <input type="datetime-local" name="tanggal_datang" class="form-control" required>
             </div>
-        </div>
+<div class="col-md-6">
+    <label for="foto" class="form-label">Foto Tamu (kamera)</label><br>
+    
+    <!-- Preview hasil foto -->
+    <div class="mb-2">
+         <video id="video" autoplay width="100%"></video>
+         <canvas id="canvas" style="display:none;"></canvas>
+         <img id="previewFoto" style="display:none;" class="img-thumbnail mt-2" />
+    </div>
+
+    <input type="hidden" name="foto_base64" id="foto_base64">
+
+    <div class="d-flex gap-2">
+        <button type="button" class="btn btn-sm btn-primary" id="ambilFoto">📸 Ambil Foto</button>
+        <button type="button" class="btn btn-sm btn-danger" id="ulangFoto" style="display: none;">Ulangi</button>
+    </div>
+</div>
+         </div>
         </div>
         <div class="modal-footer">
             <button type="submit" class="btn btn-success"><i class="bi bi-save me-1"></i> Simpan</button>
@@ -470,6 +487,50 @@ document.getElementById('btnMasuk').addEventListener('click', () => {
         inputTanggal.value = formatted;
     });
     
+    let video = document.getElementById('video');
+let canvas = document.getElementById('canvas');
+let previewFoto = document.getElementById('previewFoto');
+let inputBase64 = document.getElementById('foto_base64');
+let ambilFotoBtn = document.getElementById('ambilFoto');
+let ulangFotoBtn = document.getElementById('ulangFoto');
+
+// Akses kamera saat modal dibuka
+document.getElementById('modalTambahTamu').addEventListener('shown.bs.modal', function () {
+    navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+            video.srcObject = stream;
+            video.play();
+        })
+        .catch(err => {
+            alert('Tidak dapat mengakses kamera: ' + err);
+        });
+});
+
+// Tombol ambil foto
+ambilFotoBtn.addEventListener('click', function () {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+
+    let dataURL = canvas.toDataURL('image/jpeg');
+    previewFoto.src = dataURL;
+    previewFoto.style.display = 'block';
+    inputBase64.value = dataURL;
+
+    video.style.display = 'none';
+    canvas.style.display = 'none';
+    ambilFotoBtn.style.display = 'none';
+    ulangFotoBtn.style.display = 'inline-block';
+});
+
+// Tombol ulangi
+ulangFotoBtn.addEventListener('click', function () {
+    previewFoto.style.display = 'none';
+    inputBase64.value = '';
+    video.style.display = 'block';
+    ambilFotoBtn.style.display = 'inline-block';
+    ulangFotoBtn.style.display = 'none';
+});
 
 </script>
 

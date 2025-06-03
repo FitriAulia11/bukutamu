@@ -9,7 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <!-- SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             overflow-x: hidden;
@@ -95,39 +96,14 @@
             margin: 10px auto;
         }
 
-        .search-form .form-control {
-            border-radius: 10px;
-        }
-
+        .search-form .form-control,
         .search-form .btn {
             border-radius: 10px;
         }
 
-        .table th, .table td {
+        .table th,
+        .table td {
             vertical-align: middle !important;
-        }
-
-        #toast-success {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            min-width: 300px;
-            max-width: 500px;
-            border-radius: 12px;
-            animation: fadeSlide 0.5s ease forwards;
-        }
-
-        @keyframes fadeSlide {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -20px);
-            }
-            to {
-                opacity: 1;
-                transform: translate(-50%, 0);
-            }
         }
     </style>
 </head>
@@ -158,90 +134,78 @@
         <hr>
     </div>
 
-    <!-- Notifikasi -->
-@if(session('success'))
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        Swal.fire({
-            icon: 'success',
-            title: 'Berhasil!',
-            text: '{{ session('success') }}',
-            confirmButtonColor: '#3085d6',
-            timer: 2000,
-            showConfirmButton: false,
-            position: 'center'
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#3085d6',
+                timer: 2000,
+                showConfirmButton: false,
+                position: 'center'
+            });
         });
-    });
-</script>
-@endif
+    </script>
+    @endif
 
-    <!-- Tombol trigger modal -->
-    <button class="btn btn-outline-primary d-inline-flex align-items-center gap-2 mb-4 shadow-sm px-4 py-2 rounded-pill" 
-            data-bs-toggle="modal" data-bs-target="#modalTambahTamu">
-        <i class="bi bi-plus-circle-fill fs-5"></i>
-        <span>Tambah Data Baru</span>
+    <button class="btn btn-outline-primary mb-4 rounded-pill px-4 py-2" data-bs-toggle="modal" data-bs-target="#modalTambahTamu">
+        <i class="bi bi-plus-circle-fill me-2"></i> Tambah Data Baru
     </button>
 
     <!-- Modal Tambah Tamu -->
     <div class="modal fade" id="modalTambahTamu" tabindex="-1" aria-labelledby="modalTambahTamuLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <form action="{{ route('admin.tamu.store') }}" method="POST">
-            @csrf
-         <div class="modal-header border-0 justify-content-center position-relative bg-primary text-white py-3 rounded-top shadow-sm">
-  <h5 class="modal-title fw-bold d-flex align-items-center gap-2" id="modalTambahTamuLabel">
-    <i class="bi bi-person-plus-fill fs-4"></i> <!-- Icon Bootstrap person plus -->
-    Tambah Data Tamu
-  </h5>
-  <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Tutup"></button>
-</div>
-
-            <div class="modal-body row g-3">
-              <div class="col-md-6">
-                <label for="nama" class="form-label">Nama</label>
-                <input type="text" name="nama" class="form-control" required>
-              </div>
-              <div class="col-md-6">
-                <label for="telepon" class="form-label">Telepon</label>
-                <input type="text" name="telepon" class="form-control" required>
-              </div>
-              <div class="col-md-12">
-                <label for="alamat" class="form-label">Alamat</label>
-                <textarea name="alamat" class="form-control" rows="2" required></textarea>
-              </div>
-              <div class="col-md-6">
-                <label for="keperluan" class="form-label">Keperluan</label>
-                <input type="text" name="keperluan" class="form-control" required>
-              </div>
-              <div class="col-md-6">
-                <label for="kategori" class="form-label">Kategori</label>
-                <select name="kategori" id="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
-                    <option value="" disabled {{ old('kategori') ? '' : 'selected' }}>-- Pilih Kategori --</option>
-                    @foreach(['Wali Santri','Tamu Hotel','Orangtua Siswa','Kunjungan Dinas','Calon Siswa','Tokoh Masyarakat','Kunjungan Sekolah'] as $kategori)
-                        <option value="{{ $kategori }}" {{ old('kategori') == $kategori ? 'selected' : '' }}>{{ $kategori }}</option>
-                    @endforeach
-                </select>
-                @error('kategori')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('admin.tamu.store') }}" method="POST">
+                    @csrf
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title" id="modalTambahTamuLabel"><i class="bi bi-person-plus-fill me-2"></i>Tambah Data Tamu</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row g-3">
+                        <div class="col-md-6">
+                            <label for="nama" class="form-label">Nama</label>
+                            <input type="text" name="nama" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="telepon" class="form-label">Telepon</label>
+                            <input type="text" name="telepon" class="form-control" required>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="alamat" class="form-label">Alamat</label>
+                            <textarea name="alamat" class="form-control" rows="2" required></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="keperluan" class="form-label">Keperluan</label>
+                            <input type="text" name="keperluan" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="kategori" class="form-label">Kategori</label>
+                            <select name="kategori" class="form-select" required>
+                                <option value="" disabled selected>-- Pilih Kategori --</option>
+                                @foreach(['Wali Santri','Tamu Hotel','Orangtua Siswa','Kunjungan Dinas','Calon Siswa','Tokoh Masyarakat','Kunjungan Sekolah'] as $kategori)
+                                    <option value="{{ $kategori }}">{{ $kategori }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="tanggal_datang" class="form-label">Tanggal Datang</label>
+                            <input type="datetime-local" name="tanggal_datang" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-center">
+                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
+                            <i class="bi bi-x-circle me-2"></i> Batal
+                        </button>
+                        <button type="submit" class="btn btn-primary rounded-pill">
+                            <i class="bi bi-check-circle me-2"></i> Simpan
+                        </button>
+                    </div>
+                </form>
             </div>
-              <div class="col-md-6">
-                <label for="tanggal_datang" class="form-label">Tanggal Datang</label>
-                <input type="datetime-local" name="tanggal_datang" class="form-control" required>
-              </div>
-            </div>
-           <div class="modal-footer d-flex justify-content-center gap-3">
-  <button type="button" class="btn btn-secondary px-4 py-2 rounded-pill" data-bs-dismiss="modal">
-    <i class="bi bi-x-circle me-2"></i> Batal
-  </button>
-  <button type="submit" class="btn btn-primary px-4 py-2 rounded-pill">
-    <i class="bi bi-check-circle me-2"></i> Simpan
-  </button>
-</div>
-
-          </form>
         </div>
-      </div>
     </div>
 
     <!-- Search Form -->
@@ -257,7 +221,7 @@
         </div>
     </form>
 
-    <!-- Table -->
+    <!-- Tabel Data -->
     <div class="table-responsive">
         <table class="table table-bordered align-middle">
             <thead class="table-light">
@@ -269,31 +233,40 @@
                     <th>Keperluan</th>
                     <th>Kategori</th>
                     <th>Tanggal</th>
+                    <th>Foto</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($tamus as $index => $tamu)
-                    <tr>
-                        <td>{{ $tamus->firstItem() + $index }}</td>
-                        <td>{{ $tamu->nama }}</td>
-                        <td>{{ $tamu->telepon }}</td>
-                        <td>{{ $tamu->alamat }}</td>
-                        <td>{{ $tamu->keperluan }}</td>
-                        <td>{{ $tamu->kategori }}</td>
-                        <td>{{ \Carbon\Carbon::parse($tamu->tanggal_datang)->format('d M Y H:i') }}</td>
-                        <td>
-                            <a href="{{ route('admin.tamu.edit', $tamu->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="{{ route('admin.tamu.destroy', $tamu->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus data ini?')">
-                                @csrf @method('DELETE')
-                                <button class="btn btn-sm btn-danger">Hapus</button>
-                            </form>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ $tamus->firstItem() + $index }}</td>
+                    <td>{{ $tamu->nama }}</td>
+                    <td>{{ $tamu->telepon }}</td>
+                    <td>{{ $tamu->alamat }}</td>
+                    <td>{{ $tamu->keperluan }}</td>
+                    <td>{{ $tamu->kategori }}</td>
+                    <td>{{ \Carbon\Carbon::parse($tamu->tanggal_datang)->format('d M Y, H:i') }}</td>
+                    <td>
+                        @if($tamu->foto)
+                        <img src="{{ asset('storage/' . $tamu->foto) }}" alt="Foto Tamu" class="img-thumbnail" width="100">
+                        @else
+                        <span class="text-muted">Belum Ada Foto</span>
+                        @endif
+                    </td>
+                    <td>
+                        <a href="{{ route('admin.tamu.edit', $tamu->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route('admin.tamu.destroy', $tamu->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Hapus data ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-sm btn-danger">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
                 @empty
-                    <tr>
-                        <td colspan="8" class="text-center">Tidak ada data ditemukan.</td>
-                    </tr>
+                <tr>
+                    <td colspan="9" class="text-center">Tidak ada data ditemukan.</td>
+                </tr>
                 @endforelse
             </tbody>
         </table>
@@ -304,7 +277,6 @@
     </div>
 </div>
 
-<!-- Script -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function toggleSidebar() {
@@ -324,15 +296,6 @@
             toggleIcon.classList.replace('bi-chevron-right', 'bi-chevron-left');
         }
     }
-
-    // Auto-dismiss toast success
-    setTimeout(() => {
-        const toast = document.getElementById('toast-success');
-        if (toast) {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }
-    }, 3000);
 </script>
 
 </body>
