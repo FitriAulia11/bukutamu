@@ -65,14 +65,15 @@ public function simpanKunjunganLama(Request $request)
     $tamuLama = Tamu::findOrFail($request->tamu_id);
 
     // Buat salinan baru data tamu
-    $tamuBaru = Tamu::create([
-        'nama' => $tamuLama->nama,
-        'telepon' => $tamuLama->telepon,
-        'tanggal_datang' => $tamuLama->tanggal_datang,
-        'alamat' => $tamuLama->alamat,
-        'keperluan' => $tamuLama->keperluan,
-        'kategori' => $tamuLama->kategori,
-        ]);
+  $tamuBaru = Tamu::create([
+    'nama' => $tamuLama->nama,
+    'telepon' => $tamuLama->telepon,
+    'tanggal_datang' => $request->tanggal_kunjungan, // Ambil dari input form
+    'alamat' => $tamuLama->alamat,
+    'keperluan' => $request->keperluan,
+    'kategori' => $request->kategori, // Ambil dari input form
+]);
+
 
     // Buat kunjungan baru berdasarkan tamu yang barusan disalin
     Kunjungan::create([

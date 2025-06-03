@@ -266,42 +266,51 @@
   <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Tutup"></button>
 </div>
 
-      <div class="modal-body">
-        <form id="formUserLama" method="POST" action="{{ route('tamu.lama') }}">
-          @csrf
+<div class="modal-body">
+  <form id="formUserLama" method="POST" action="{{ route('tamu.lama') }}">
+    @csrf
 
-          <!-- Pilih Nama -->
-          <div class="mb-3">
-            <label for="pilihUser" class="form-label">Pilih Nama Anda</label>
-            <select class="form-select" id="pilihUser" name="tamu_id" required>
-              <option value="">-- Pilih User --</option>
-              @foreach ($daftarTamu as $tamu)
-                  <option value="{{ $tamu->id }}">{{ $tamu->nama }}</option>
-              @endforeach
-            </select>
-          </div>
+    <!-- Pilih Nama -->
+    <div class="mb-3">
+      <label for="pilihUser" class="form-label">Pilih Nama Anda</label>
+      <select class="form-select" id="pilihUser" name="tamu_id" required>
+        <option value="">-- Pilih User --</option>
+        @foreach ($daftarTamu as $tamu)
+            <option value="{{ $tamu->id }}">{{ $tamu->nama }}</option>
+        @endforeach
+      </select>
+    </div>
 
-          <!-- Pilih Kategori -->
-          <div class="mb-3">
-            <label for="kategori" class="form-label fw-semibold">Kategori</label>
-            <select name="kategori" id="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
-              <option value="" disabled selected>-- Pilih Kategori --</option>
-              <option value="Wali Santri">Wali Santri</option>
-              <option value="Tamu Hotel">Tamu Hotel</option>
-              <option value="Orangtua Siswa">Orangtua Siswa</option>
-              <option value="Kunjungan Dinas">Kunjungan Dinas</option>
-              <option value="Calon Siswa">Calon Siswa</option>
-              <option value="Tokoh Masyarakat">Tokoh Masyarakat</option>
-              <option value="Kunjungan Sekolah">Kunjungan Sekolah</option>
-            </select>
-            @error('kategori')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
+    <!-- Pilih Kategori -->
+    <div class="mb-3">
+      <label for="kategori" class="form-label fw-semibold">Kategori</label>
+      <select name="kategori" id="kategori" class="form-select @error('kategori') is-invalid @enderror" required>
+        <option value="" disabled selected>-- Pilih Kategori --</option>
+        <option value="Wali Santri">Wali Santri</option>
+        <option value="Tamu Hotel">Tamu Hotel</option>
+        <option value="Orangtua Siswa">Orangtua Siswa</option>
+        <option value="Kunjungan Dinas">Kunjungan Dinas</option>
+        <option value="Calon Siswa">Calon Siswa</option>
+        <option value="Tokoh Masyarakat">Tokoh Masyarakat</option>
+        <option value="Kunjungan Sekolah">Kunjungan Sekolah</option>
+      </select>
+      @error('kategori')
+        <div class="invalid-feedback">{{ $message }}</div>
+      @enderror
+    </div>
 
-          <button type="submit" class="btn btn-primary">Lanjut</button>
-        </form>
-      </div>
+    <!-- Keperluan -->
+    <div class="mb-3">
+      <label for="keperluan" class="form-label fw-semibold">Keperluan</label>
+      <input type="text" name="keperluan" id="keperluan" class="form-control @error('keperluan') is-invalid @enderror" required placeholder="Contoh: Mengantar dokumen, pertemuan, dll">
+      @error('keperluan')
+        <div class="invalid-feedback">{{ $message }}</div>
+      @enderror
+    </div>
+
+    <button type="submit" class="btn btn-primary">Lanjut</button>
+  </form>
+</div>
 
     </div>
   </div>
