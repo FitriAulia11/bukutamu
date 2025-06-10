@@ -153,60 +153,64 @@
     <button class="btn btn-outline-primary mb-4 rounded-pill px-4 py-2" data-bs-toggle="modal" data-bs-target="#modalTambahTamu">
         <i class="bi bi-plus-circle-fill me-2"></i> Tambah Data Baru
     </button>
-
-    <!-- Modal Tambah Tamu -->
-    <div class="modal fade" id="modalTambahTamu" tabindex="-1" aria-labelledby="modalTambahTamuLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form action="{{ route('admin.tamu.store') }}" method="POST">
-                    @csrf
-                    <div class="modal-header bg-primary text-white">
-                        <h5 class="modal-title" id="modalTambahTamuLabel"><i class="bi bi-person-plus-fill me-2"></i>Tambah Data Tamu</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    
+<!-- Modal Tambah Tamu -->
+<div class="modal fade" id="modalTambahTamu" tabindex="-1" aria-labelledby="modalTambahTamuLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form action="{{ route('admin.tamu.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalTambahTamuLabel"><i class="bi bi-person-plus-fill me-2"></i>Tambah Data Tamu</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body row g-3">
+                    <div class="col-md-6">
+                        <label for="nama" class="form-label">Nama</label>
+                        <input type="text" name="nama" class="form-control" required>
                     </div>
-                    <div class="modal-body row g-3">
-                        <div class="col-md-6">
-                            <label for="nama" class="form-label">Nama</label>
-                            <input type="text" name="nama" class="form-control" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="telepon" class="form-label">Telepon</label>
-                            <input type="text" name="telepon" class="form-control" required>
-                        </div>
-                        <div class="col-md-12">
-                            <label for="alamat" class="form-label">Alamat</label>
-                            <textarea name="alamat" class="form-control" rows="2" required></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="keperluan" class="form-label">Keperluan</label>
-                            <input type="text" name="keperluan" class="form-control" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="kategori" class="form-label">Kategori</label>
-                            <select name="kategori" class="form-select" required>
-                                <option value="" disabled selected>-- Pilih Kategori --</option>
-                                @foreach(['Wali Santri','Tamu Hotel','Orangtua Siswa','Kunjungan Dinas','Calon Siswa','Tokoh Masyarakat','Kunjungan Sekolah'] as $kategori)
-                                    <option value="{{ $kategori }}">{{ $kategori }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="tanggal_datang" class="form-label">Tanggal Datang</label>
-                            <input type="datetime-local" name="tanggal_datang" class="form-control" required>
-                        </div>
+                    <div class="col-md-6">
+                        <label for="telepon" class="form-label">Telepon</label>
+                        <input type="text" name="telepon" class="form-control" required>
                     </div>
-                    <div class="modal-footer justify-content-center">
-                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
-                            <i class="bi bi-x-circle me-2"></i> Batal
-                        </button>
-                        <button type="submit" class="btn btn-primary rounded-pill">
-                            <i class="bi bi-check-circle me-2"></i> Simpan
-                        </button>
+                    <div class="col-md-12">
+                        <label for="alamat" class="form-label">Alamat</label>
+                        <textarea name="alamat" class="form-control" rows="2" required></textarea>
                     </div>
-                </form>
-            </div>
+                    <div class="col-md-6">
+                        <label for="keperluan" class="form-label">Keperluan</label>
+                        <input type="text" name="keperluan" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="kategori" class="form-label">Kategori</label>
+                        <select name="kategori" class="form-select" required>
+                            <option value="" disabled selected>-- Pilih Kategori --</option>
+                            @foreach(['Wali Santri','Tamu Hotel','Orangtua Siswa','Kunjungan Dinas','Calon Siswa','Tokoh Masyarakat','Kunjungan Sekolah'] as $kategori)
+                                <option value="{{ $kategori }}">{{ $kategori }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="tanggal_datang" class="form-label">Tanggal Datang</label>
+                        <input type="datetime-local" name="tanggal_datang" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="foto" class="form-label">Foto</label>
+                        <input type="file" name="foto" class="form-control">
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-2"></i> Batal
+                    </button>
+                    <button type="submit" class="btn btn-primary rounded-pill">
+                        <i class="bi bi-check-circle me-2"></i> Simpan
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
     <!-- Search Form -->
     <form method="GET" class="row g-3 mb-4 search-form">

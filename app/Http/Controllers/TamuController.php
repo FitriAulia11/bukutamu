@@ -97,46 +97,31 @@ public function daftarTamu()
 public function store(Request $request)
 {
     $validated = $request->validate([
-        'nama' => 'required|string',
-        'telepon' => 'required|string',
-        'alamat' => 'required|string',
-        'keperluan' => 'required|string',
-        'kategori' => 'required|string',
-        'tanggal_datang' => 'required|date',
+        // … aturan lain …
         'foto_base64' => 'nullable|string',
     ]);
 
     $fotoPath = null;
+    if (!empty($validated['foto_base64'])) {
+        // deteksi MIME dan ext
+        preg_match('#^data:image/(\w+);base64,#i', $validated['foto_base64'], $m);
+        $ext = strtolower($m[1] ?? 'jpg');
 
-    // Jika ada base64 dari kamera
-    if (!empty($request->foto_base64)) {
-        $fotoData = $request->foto_base64;
+        // decode
+        $data = preg_replace('#^data:image/\w+;base64,#i', '', $validated['foto_base64']);
+        $data = str_replace(' ', '+', $data);
+        $decoded = base64_decode($data);
 
-        // Hapus prefix base64
-        $fotoData = preg_replace('#^data:image/\w+;base64,#i', '', $fotoData);
-        $fotoData = str_replace(' ', '+', $fotoData);
-        $fotoDecoded = base64_decode($fotoData);
-
-        // Nama file unik
-        $fileName = 'tamu_' . uniqid() . '.png';
-
-        // Simpan ke storage/app/public/foto_tamu/
-        \Storage::disk('public')->put("foto_tamu/{$fileName}", $fotoDecoded);
-
+        $fileName = 'tamu_'.uniqid().'.'.$ext;
+        \Storage::disk('public')->put("foto_tamu/{$fileName}", $decoded);
         $fotoPath = "foto_tamu/{$fileName}";
     }
 
-    // Simpan ke DB
     \App\Models\Tamu::create([
-        'nama' => $validated['nama'],
-        'telepon' => $validated['telepon'],
-        'alamat' => $validated['alamat'],
-        'keperluan' => $validated['keperluan'],
-        'kategori' => $validated['kategori'],
-        'tanggal_datang' => $validated['tanggal_datang'],
+        // … kolom lain …
         'foto' => $fotoPath,
     ]);
 
-    return redirect()->back()->with('success', 'Data tamu berhasil disimpan!');
+    return back()->with('success','Data tamu berhasil disimpan!');
 }
 }
